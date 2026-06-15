@@ -1,4 +1,5 @@
 import os
+import sys
 from generate_test_suite_report import TEST_CASES
 
 def generate_markdown_report(filename):
@@ -67,5 +68,8 @@ Below is the complete run log of all 125 test cases:
     print(f"Markdown report generated successfully at: {filename}")
 
 if __name__ == "__main__":
-    artifact_report_path = r"C:\Users\vishw\.gemini\antigravity-ide\brain\72cffe49-0475-47a2-b0c8-618a84b208c9\appium_test_report.md"
+    if len(sys.argv) > 1:
+        artifact_report_path = sys.argv[1]
+    else:
+        artifact_report_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "reports", "appium_test_report.md")
     generate_markdown_report(artifact_report_path)
