@@ -11,7 +11,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SmartToy
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
@@ -27,13 +26,10 @@ import androidx.compose.ui.unit.dp
 fun AppDrawer(
     onItemClick: (String) -> Unit
 ) {
-
     ModalDrawerSheet {
-
         DrawerItem(
             title = "Home",
             icon = Icons.Default.Home,
-
             onClick = {
                 onItemClick("Home")
             }
@@ -42,7 +38,6 @@ fun AppDrawer(
         DrawerItem(
             title = "Planner",
             icon = Icons.Default.DateRange,
-
             onClick = {
                 onItemClick("Planner")
             }
@@ -51,7 +46,6 @@ fun AppDrawer(
         DrawerItem(
             title = "Leaderboard",
             icon = Icons.Default.EmojiEvents,
-
             onClick = {
                 onItemClick("Leaderboard")
             }
@@ -60,7 +54,6 @@ fun AppDrawer(
         DrawerItem(
             title = "Assessment",
             icon = Icons.Default.Assignment,
-
             onClick = {
                 onItemClick("Assessment")
             }
@@ -69,7 +62,6 @@ fun AppDrawer(
         DrawerItem(
             title = "Practice",
             icon = Icons.Default.Code,
-
             onClick = {
                 onItemClick("Practice")
             }
@@ -78,7 +70,6 @@ fun AppDrawer(
         DrawerItem(
             title = "AI Assistant",
             icon = Icons.Default.SmartToy,
-
             onClick = {
                 onItemClick("AI")
             }
@@ -87,7 +78,6 @@ fun AppDrawer(
         DrawerItem(
             title = "Profile",
             icon = Icons.Default.Person,
-
             onClick = {
                 onItemClick("Profile")
             }
@@ -96,32 +86,19 @@ fun AppDrawer(
         DrawerItem(
             title = "Settings",
             icon = Icons.Default.Settings,
-
             onClick = {
                 onItemClick("Settings")
             }
         )
 
         DrawerItem(
-            title = "Premium",
-            icon = Icons.Default.Star,
-
-            onClick = {
-                onItemClick("Premium")
-            }
-        )
-
-        DrawerItem(
             title = "Logout",
             icon = Icons.Default.ExitToApp,
-
             onClick = {
                 onItemClick("Logout")
             }
         )
-
     }
-
 }
 
 @Composable
@@ -130,34 +107,23 @@ fun DrawerItem(
     icon: ImageVector,
     onClick: () -> Unit
 ) {
-
     NavigationDrawerItem(
-
         label = {
             Text(text = title)
         },
-
         selected = false,
-
         onClick = {
             onClick()
         },
-
         icon = {
-
             Icon(
                 imageVector = icon,
                 contentDescription = null
             )
-
         },
-
-        modifier =
-            Modifier.padding(
-                horizontal = 12.dp,
-                vertical = 4.dp
-            )
-
+        modifier = Modifier.padding(
+            horizontal = 12.dp,
+            vertical = 4.dp
+        )
     )
-
 }

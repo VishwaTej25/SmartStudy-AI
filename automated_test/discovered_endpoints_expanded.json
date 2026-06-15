@@ -1,0 +1,839 @@
+{
+  "baseUrl": "https://api.example.com",
+  "endpoints": [
+    {
+      "path": "/api/v1/users",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/users?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/users?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/users?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/users?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/users?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/auth?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/courses?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/tests",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/tests?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/tests?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/tests?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/tests?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/tests?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/1",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/courses/2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/4",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/5",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/2",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/courses/2?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/2?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/2?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/2?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/2?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/3",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/courses/3?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/3?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/3?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/3?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/3?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/1/learn",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/courses/1/learn?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/1/learn?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/1/learn?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/1/learn?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/1/learn?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/1/test",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/courses/1/test?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/1/test?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/1/test?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/1/test?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/courses/1/test?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/profile?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/settings",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/settings?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/settings?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/settings?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/settings?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/settings?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/notifications?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/planner",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/planner?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/planner?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/planner?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/planner?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/planner?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/analytics",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/analytics?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/analytics?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/analytics?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/analytics?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/analytics?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/practice",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/practice?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/practice?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/practice?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/practice?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/practice?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/assessments",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/assessments?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/assessments?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/assessments?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/assessments?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/assessments?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/topics?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics/1",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/topics/2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics/3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics/4",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics/5",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics/2",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/topics/2?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics/2?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics/2?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics/2?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/topics/2?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/search",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/search?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/search?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/search?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/search?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/search?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/messages",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/messages?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/messages?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/messages?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/messages?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/messages?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/chat",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/chat?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/chat?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/chat?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/chat?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/chat?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/ai",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/ai?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/ai?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/ai?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/ai?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/ai?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/leaderboard",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/leaderboard?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/leaderboard?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/leaderboard?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/leaderboard?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/leaderboard?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/premium",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/premium?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/premium?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/premium?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/premium?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/premium?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/payments",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/payments?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/payments?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/payments?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/payments?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/payments?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/orders",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/orders?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/orders?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/orders?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/orders?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/orders?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/orders/1",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/orders/2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/orders/3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/orders/4",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/orders/5",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/enrollments",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/enrollments?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/enrollments?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/enrollments?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/enrollments?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/enrollments?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/enrollments/1",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/enrollments/2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/enrollments/3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/enrollments/4",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/enrollments/5",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/reports",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/reports?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/reports?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/reports?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/reports?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/reports?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/files",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/files?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/files?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/files?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/files?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/files?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/uploads",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/uploads?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/uploads?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/uploads?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/uploads?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/uploads?filter=active",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/download",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/download?page=2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/download?page=3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/download?limit=10",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/download?sort=asc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/download?filter=active",
+      "method": "GET"
+    }
+  ]
+}

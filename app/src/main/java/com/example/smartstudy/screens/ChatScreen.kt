@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,15 +32,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartstudy.backend.BackendProvider
 import com.example.smartstudy.backend.ChatEntry
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+import com.example.smartstudy.backend.GroqHelper
+import android.util.Log
+import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.LaunchedEffect
 
 @Composable
 fun ChatScreen() {
     val backend = remember { BackendProvider.backend }
+    val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
 
     var message by remember { mutableStateOf("") }
     var messages by remember {
@@ -71,6 +82,19 @@ fun ChatScreen() {
         }
     }
 
+    LaunchedEffect(messages.size) {
+        if (messages.isNotEmpty()) {
+            listState.animateScrollToItem(messages.size - 1)
+        }
+    }
+
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val backgroundColor = if (isDark) Color(0xFF000814) else Color(0xFFF3F4F6)
+    val backgroundEndColor = if (isDark) Color(0xFF001D5C) else Color(0xFFE5E7EB)
+    val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
+    val aiCardBg = if (isDark) Color(0xFF1B2235) else Color(0xFFE5E7EB)
+    val aiCardText = if (isDark) Color.White else Color(0xFF1F2937)
+
     Column(
         modifier =
             Modifier
@@ -78,20 +102,38 @@ fun ChatScreen() {
                 .background(
                     Brush.verticalGradient(
                         listOf(
-                            Color(0xFF000814),
-                            Color(0xFF001D5C)
+                            backgroundColor,
+                            backgroundEndColor
                         )
                     )
                 )
     ) {
         Text(
             text = "SmartStudy AI",
-            color = Color.White,
+            color = textColorMain,
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             modifier =
                 Modifier.padding(16.dp)
         )
+        Button(
+            onClick = {
+                scope.launch {
+
+                    val notes = GroqHelper.ask(
+                        "Generate short study notes for Java Programming"
+                    )
+
+                    messages = messages + ChatEntry(
+                        text = "📚 Study Notes\n\n$notes",
+                        userMessage = false
+                    )
+                }
+            },
+            modifier = Modifier.padding(start = 16.dp, bottom = 10.dp)
+        ) {
+            Text("Generate Notes")
+        }
 
         error?.let {
             Text(
@@ -102,6 +144,7 @@ fun ChatScreen() {
         }
 
         LazyColumn(
+            state = listState,
             modifier =
                 Modifier
                     .weight(1f)
@@ -124,7 +167,7 @@ fun ChatScreen() {
                                     if (chat.userMessage)
                                         Color(0xFF8B5CF6)
                                     else
-                                        Color(0xFF1B2235)
+                                        aiCardBg
                             ),
                         shape =
                             RoundedCornerShape(16.dp),
@@ -135,7 +178,7 @@ fun ChatScreen() {
                     ) {
                         Text(
                             text = chat.text,
-                            color = Color.White,
+                            color = if (chat.userMessage) Color.White else aiCardText,
                             modifier =
                                 Modifier.padding(14.dp)
                         )
@@ -173,19 +216,37 @@ fun ChatScreen() {
             FloatingActionButton(
                 onClick = {
                     if (message.isNotBlank()) {
+
                         val outgoing = message
                         message = ""
-                        backend.sendChatMessage(outgoing) { result ->
-                            result.onFailure { error = it.localizedMessage }
+
+                        messages = messages + ChatEntry(
+                            text = outgoing,
+                            userMessage = true
+                        )
+
+                        messages = messages + ChatEntry(
+                            text = "🤖 Thinking...",
+                            userMessage = false
+                        )
+
+                        scope.launch {
+                            val aiReply = GroqHelper.ask(outgoing)
+
+                            messages = messages + ChatEntry(
+                                text = aiReply,
+                                userMessage = false
+                            )
+
+                            android.util.Log.d("GROQ_REPLY", aiReply)
                         }
                     }
                 },
-                containerColor =
-                    Color(0xFF8B5CF6)
+                containerColor = Color(0xFF8B5CF6)
             ) {
                 Icon(
-                    Icons.Default.Send,
-                    contentDescription = null,
+                    imageVector = Icons.Default.Send,
+                    contentDescription = "Send",
                     tint = Color.White
                 )
             }

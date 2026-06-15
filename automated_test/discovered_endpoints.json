@@ -1,0 +1,175 @@
+{
+  "baseUrl": "https://api.example.com",
+  "endpoints": [
+    {
+      "path": "/api/v1/users",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/auth",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/courses",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/tests",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/courses/1",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/courses/2",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/courses/3",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/courses/1/learn",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/courses/1/test",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/profile",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/settings",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/notifications",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/planner",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/analytics",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/practice",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/assessments",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/topics",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/topics/1",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/topics/2",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/search",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/messages",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/chat",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/ai",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/leaderboard",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/premium",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/payments",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/orders",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/orders/1",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/enrollments",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/enrollments/1",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/reports",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/files",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/uploads",
+      "method": "GET",
+      "status": null
+    },
+    {
+      "path": "/api/v1/download",
+      "method": "GET",
+      "status": null
+    }
+  ]
+}

@@ -42,13 +42,19 @@ android {
 }
 
 dependencies {
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation(libs.google.play.services.auth)
     implementation("co.yml:ycharts:2.1.0")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("com.airbnb.android:lottie-compose:6.3.0")
     implementation(platform(libs.androidx.compose.bom))

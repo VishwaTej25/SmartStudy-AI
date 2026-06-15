@@ -1,0 +1,5 @@
+{
+  "baseUrl": "http://localhost:5000",
+  "user": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJ1c2VyMTIzIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODExODEyNjYsImV4cCI6MTc4MTI2NzY2Nn0.WzkQh3FpSHzs_etj0Rv9p7HWneb7ptrc4IpYYXEXOT8",
+  "admin": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhZG1pbjQ1NiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc4MTE4MTI2NiwiZXhwIjoxNzgxMjY3NjY2fQ.7pviKAKv7kERcKQo1tlT_FkFSrNeZiGY0xF6YnbXEoc"
+}

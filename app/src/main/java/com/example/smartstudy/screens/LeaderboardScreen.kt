@@ -16,9 +16,11 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -36,6 +38,8 @@ import androidx.compose.ui.unit.sp
 import com.example.smartstudy.backend.BackendProvider
 import com.example.smartstudy.backend.SmartStudyBackend
 import com.example.smartstudy.backend.UserProfile
+import android.content.Intent
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun LeaderboardScreen() {
@@ -137,6 +141,7 @@ private fun LeaderboardCard(
             verticalAlignment =
                 Alignment.CenterVertically
         ) {
+            val context = LocalContext.current
             Box(
                 modifier = Modifier
                     .size(60.dp)
@@ -176,6 +181,26 @@ private fun LeaderboardCard(
                     color = Color.Gray
                 )
             }
+
+            IconButton(
+                onClick = {
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, "I am Rank $rank on SmartStudy AI with ${user.xp} XP! Join me in learning! 🚀")
+                        type = "text/plain"
+                    }
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    context.startActivity(shareIntent)
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = "Share Rank",
+                    tint = Color.White
+                )
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
 
             Icon(
                 imageVector =

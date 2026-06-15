@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
+import com.example.smartstudy.model.Topic
 
 class SmartStudyBackend(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
@@ -100,12 +101,37 @@ class SmartStudyBackend(
                 }
 
                 val remoteCourses = snapshot?.documents.orEmpty().map { it.toCourse() }
+                println("COURSES COUNT = ${remoteCourses.size}")
                 if (remoteCourses.isEmpty()) {
                     seedCourses()
                     onUpdate(defaultCourses)
                 } else {
                     onUpdate(remoteCourses)
                 }
+            }
+    }
+    fun listenTopics(
+        courseId: String,
+        onUpdate: (List<Topic>) -> Unit,
+        onError: (Exception) -> Unit
+    ): ListenerRegistration {
+
+        return db.collection("courses")
+            .document(courseId)
+            .collection("topics")
+            .addSnapshotListener { snapshot, error ->
+
+                if (error != null) {
+                    onError(error)
+                    return@addSnapshotListener
+                }
+
+                val topics = snapshot?.documents?.map {
+                    it.toObject(Topic::class.java)?.copy(id = it.id)
+                        ?: Topic(id = it.id)
+                } ?: emptyList()
+
+                onUpdate(topics)
             }
     }
 
@@ -257,15 +283,7 @@ class SmartStudyBackend(
                     userMessage = true
                 )
             )
-            batch.set(
-                aiMessageRef,
-                ChatEntry(
-                    id = aiMessageRef.id,
-                    text = "AI response for: $trimmed",
-                    userMessage = false,
-                    createdAt = System.currentTimeMillis() + 1
-                )
-            )
+
         }
             .addOnSuccessListener { onResult(Result.success(Unit)) }
             .addOnFailureListener { onResult(Result.failure(it)) }
@@ -348,6 +366,14 @@ class SmartStudyBackend(
             .addOnFailureListener { onResult(Result.failure(it)) }
     }
 
+    fun updateEnrollmentProgress(courseId: String, progress: Double, onResult: (Result<Unit>) -> Unit = {}) {
+        val uid = currentUserId ?: return onResult(Result.failure(IllegalStateException("Login required.")))
+        db.collection(USERS).document(uid).collection(ENROLLMENTS).document(courseId)
+            .set(mapOf("progress" to progress), SetOptions.merge())
+            .addOnSuccessListener { onResult(Result.success(Unit)) }
+            .addOnFailureListener { onResult(Result.failure(it)) }
+    }
+
     private fun seedCourses() {
         val batch = db.batch()
         defaultCourses.forEach { course ->
@@ -387,12 +413,19 @@ class SmartStudyBackend(
         private const val TEST_ATTEMPTS = "testAttempts"
 
         val defaultCourses = listOf(
-            Course("java", "Java Programming", "Core Java + Advanced Java", "Java", 1),
-            Course("python", "Python", "Python Basics to Advanced", "Py", 2),
-            Course("dsa", "DSA", "Data Structures & Algorithms", "DSA", 3),
-            Course("dbms", "DBMS", "Database Management System", "DB", 4),
-            Course("os", "Operating Systems", "OS Concepts & Scheduling", "OS", 5),
-            Course("networks", "Computer Networks", "Networking Fundamentals", "NET", 6)
+            Course("java",     "Java Programming",    "Core Java + OOPs + Advanced Java",    "☕", 1),
+            Course("python",   "Python",              "Python Basics to Advanced + ML",       "🐍", 2),
+            Course("dsa",      "DSA",                 "Data Structures & Algorithms",         "🧠", 3),
+            Course("dbms",     "DBMS",                "Database Management System",           "🗄️", 4),
+            Course("os",       "Operating Systems",   "OS Concepts & Process Scheduling",     "💻", 5),
+            Course("networks", "Computer Networks",   "Networking Fundamentals & Protocols",  "🌐", 6),
+            Course("cn",       "Cloud Computing",     "AWS, Azure & GCP Fundamentals",        "☁️", 7),
+            Course("se",       "Software Engineering","SDLC, Agile & Design Patterns",        "🏗️", 8),
+            Course("ml",       "Machine Learning",    "ML Algorithms & Neural Networks",      "🤖", 9),
+            Course("crypto",   "Cryptography",        "Encryption, Hashing & Security",       "🔐", 10),
+            Course("webdev",   "Web Development",     "HTML, CSS, JS, React & Node.js",       "🌍", 11),
+            Course("mobile",   "Mobile Development",  "Android & iOS App Development",        "📱", 12),
+            Course("devops",   "DevOps",              "CI/CD, Docker & Kubernetes",           "⚙️", 13)
         )
 
         val sampleLeaderboard = listOf(

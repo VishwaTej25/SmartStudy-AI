@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -34,6 +35,15 @@ fun HomeContent() {
         )
 
     val scope = rememberCoroutineScope()
+
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val backgroundColor = if (isDark) Color(0xFF050B1A) else Color(0xFFF3F4F6)
+    val backgroundEndColor = if (isDark) Color(0xFF0A1B55) else Color(0xFFE5E7EB)
+    val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
+    val textColorMuted = if (isDark) Color.LightGray else Color(0xFF4B5563)
+    val textColorSecondary = if (isDark) Color.Gray else Color(0xFF6B7280)
+    val cardBgColor = if (isDark) Color(0xFF1B2235) else Color(0xFFFFFFFF)
+    val cardBgColorSecondary = if (isDark) Color(0xFF1A2033) else Color(0xFFFFFFFF)
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -82,18 +92,6 @@ fun HomeContent() {
                 )
 
                 NavigationDrawerItem(
-                    label = { Text("💎 Premium") },
-                    selected = false,
-                    onClick = {
-                        Toast.makeText(
-                            context,
-                            "Premium",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                )
-
-                NavigationDrawerItem(
                     label = { Text("🚪 Logout") },
                     selected = false,
                     onClick = {
@@ -119,8 +117,8 @@ fun HomeContent() {
                     .background(
                         Brush.verticalGradient(
                             listOf(
-                                Color(0xFF050B1A),
-                                Color(0xFF0A1B55)
+                                backgroundColor,
+                                backgroundEndColor
                             )
                         )
                     )
@@ -158,32 +156,44 @@ fun HomeContent() {
                         Column {
 
                             Text(
-                                "Hello Vishwa 👋",
-                                color = Color.White,
-                                fontSize = 28.sp,
-                                fontWeight =
-                                    FontWeight.Bold
+                                text = "Welcome Back 👋",
+                                color = textColorSecondary,
+                                fontSize = 16.sp
+                            )
+
+                            Spacer(
+                                Modifier.height(4.dp)
                             )
 
                             Text(
-                                "AI powered learning dashboard 🚀",
-                                color = Color.Gray
+                                text = "Vishwa",
+                                color = textColorMain,
+                                fontSize = 32.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+
+                            Spacer(
+                                Modifier.height(4.dp)
+                            )
+
+                            Text(
+                                text = "Let's continue your learning journey 🚀",
+                                color = textColorMuted,
+                                fontSize = 14.sp
                             )
 
                         }
 
                     }
 
-                    Row {
 
-
-                    }
 
                 }
 
                 Spacer(
                     Modifier.height(20.dp)
                 )
+
 
                 Card(
                     shape =
@@ -220,14 +230,13 @@ fun HomeContent() {
                             Text(
                                 "7 Days",
                                 color = Color.White,
-                                fontSize = 34.sp,
-                                fontWeight =
-                                    FontWeight.Bold
+                                fontSize = 38.sp,
+                                fontWeight = FontWeight.ExtraBold
                             )
 
                             Text(
-                                "Keep it up!",
-                                color = Color.White
+                                "Keep your streak alive!",
+                                color = Color.White.copy(alpha = 0.8f)
                             )
 
                         }
@@ -259,126 +268,143 @@ fun HomeContent() {
                 Spacer(Modifier.height(25.dp))
 
                 Card(
-
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
-
                     colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFF1B2235)
-                    )
-
+                        containerColor = cardBgColor
+                    ),
+                    shape = RoundedCornerShape(20.dp)
                 ) {
-
-                    Column(
-
-                        modifier =
-                            Modifier.padding(20.dp)
-
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        Text(
-                            text = "👤 Vishwa",
-                            color = Color.White,
-                            style =
-                                MaterialTheme.typography.headlineSmall
-                        )
+                        Box(
+                            modifier = Modifier
+                                .size(60.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFF8B3DFF)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "V",
+                                color = Color.White,
+                                fontSize = 26.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
 
-                        Spacer(
-                            Modifier.height(10.dp)
-                        )
+                        Spacer(modifier = Modifier.width(16.dp))
 
-                        Text(
-                            text = "Department : CSE",
-                            color = Color.LightGray
-                        )
+                        Column {
 
-                        Text(
-                            text = "Year : 4th Year",
-                            color = Color.LightGray
-                        )
+                            Text(
+                                text = "Vishwa",
+                                color = textColorMain,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
 
-                        Text(
-                            text = "College : SIMATS",
-                            color = Color.LightGray
-                        )
+                            Text(
+                                text = "B.Tech - CSE",
+                                color = textColorMuted
+                            )
 
-                        Spacer(
-                            Modifier.height(10.dp)
-                        )
+                            Text(
+                                text = "SIMATS University",
+                                color = textColorSecondary
+                            )
 
-                        Text(
-                            text="Keep learning 🚀",
-                            color=Color(0xFF8B5CF6)
-                        )
+                            Spacer(modifier = Modifier.height(6.dp))
 
+                            Text(
+                                text = "Keep Learning 🚀",
+                                color = Color(0xFF8B5CF6)
+                            )
+                        }
                     }
-
                 }
 
-                Spacer(
-                    Modifier.height(16.dp)
-                )
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Row(
-
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-
-                    horizontalArrangement =
-                        Arrangement.SpaceBetween
-
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
 
-                    SmallStatCard(
-                        "📚 Courses",
-                        "4"
+                    StatCard(
+                        modifier = Modifier.weight(1f),
+                        title = "Courses",
+                        value = "4"
                     )
 
-                    SmallStatCard(
-                        "✅ Done",
-                        "2"
+                    StatCard(
+                        modifier = Modifier.weight(1f),
+                        title = "Tests",
+                        value = "2"
                     )
 
+                    StatCard(
+                        modifier = Modifier.weight(1f),
+                        title = "Avg Score",
+                        value = "85%"
+                    )
                 }
-
-                Spacer(
-                    Modifier.height(12.dp)
-                )
-
-                Row(
-
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal=16.dp),
-
-                    horizontalArrangement =
-                        Arrangement.SpaceBetween
-
-                ) {
-
-                    SmallStatCard(
-                        "🏆 Badges",
-                        "15"
-                    )
-
-                    SmallStatCard(
-                        "🔥 Streak",
-                        "7"
-                    )
-
-                }
-
                 Spacer(
                     Modifier.height(25.dp)
                 )
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = cardBgColor
+                    ),
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+
+                    Column(
+                        modifier = Modifier.padding(18.dp)
+                    ) {
+
+                        Text(
+                            text = "📚 Course Progress",
+                            color = textColorMain,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        LinearProgressIndicator(
+                            progress = { 0.72f },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(8.dp),
+                            color = Color(0xFF8B3DFF)
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = "72% Completed",
+                            color = Color(0xFF8B3DFF),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
                     "Quick Access",
-                    color = Color.White,
+                    color = textColorMain,
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -391,10 +417,10 @@ fun HomeContent() {
                         Arrangement.SpaceBetween
                 ) {
 
-                    QuickCard("Notes","📚")
-                    QuickCard("Tasks","✅")
-                    QuickCard("Practice","🎯")
-                    QuickCard("Analytics","📈")
+                    QuickCard("Courses","📚")
+                    QuickCard("AI","✅")
+                    QuickCard("Progress","🎯")
+                    QuickCard("Rank","📈")
 
                 }
 
@@ -409,7 +435,8 @@ fun HomeContent() {
 
                 SectionCard(
                     "Continue Learning",
-                    "DSA + Java Interview Prep - 72%"                )
+                    "DSA + Java Interview Prep - 72%"
+                )
 
                 Spacer(Modifier.height(25.dp))
 
@@ -419,7 +446,7 @@ fun HomeContent() {
 
                 Text(
                     "Today's Plan",
-                    color=Color.White,
+                    color=textColorMain,
                     fontSize=24.sp,
                     fontWeight=FontWeight.Bold
                 )
@@ -459,18 +486,20 @@ fun QuickCard(
     title:String,
     emoji:String
 ){
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
+    val cardBgColorSecondary = if (isDark) Color(0xFF1A2033) else Color(0xFFFFFFFF)
 
     Card(
         modifier=
             Modifier
-                .width(80.dp)
-                .height(90.dp)
+                .width(90.dp)
+                .height(100.dp)
                 .clickable {},
 
         colors=
             CardDefaults.cardColors(
-                containerColor=
-                    Color(0xFF1A2033)
+                containerColor=cardBgColorSecondary
             )
     ){
 
@@ -487,7 +516,7 @@ fun QuickCard(
 
             Text(
                 emoji,
-                fontSize=25.sp
+                fontSize=30.sp
             )
 
             Spacer(
@@ -496,7 +525,7 @@ fun QuickCard(
 
             Text(
                 title,
-                color=Color.White
+                color=textColorMain
             )
 
         }
@@ -510,12 +539,14 @@ fun SectionCard(
     title:String,
     subtitle:String
 ){
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
+    val cardBgColorSecondary = if (isDark) Color(0xFF1A2033) else Color(0xFFFFFFFF)
 
     Card(
         colors=
             CardDefaults.cardColors(
-                containerColor=
-                    Color(0xFF1A2033)
+                containerColor=cardBgColorSecondary
             )
     ){
 
@@ -526,8 +557,8 @@ fun SectionCard(
 
             Text(
                 title,
-                color=Color.White,
-                fontSize=22.sp
+                color=textColorMain,
+                fontSize=13.sp
             )
 
             Spacer(
@@ -558,12 +589,14 @@ fun SectionCard(
 
 @Composable
 fun WeeklyGraph(){
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
+    val cardBgColorSecondary = if (isDark) Color(0xFF1A2033) else Color(0xFFFFFFFF)
 
     Card(
         colors=
             CardDefaults.cardColors(
-                containerColor=
-                    Color(0xFF1A2033)
+                containerColor=cardBgColorSecondary
             )
     ){
 
@@ -574,7 +607,7 @@ fun WeeklyGraph(){
 
             Text(
                 "Weekly Student Performance 📈",
-                color=Color.White,
+                color=textColorMain,
                 fontSize=22.sp
             )
 
@@ -609,6 +642,8 @@ fun WeeklyGraph(){
 
 @Composable
 fun GraphBar(value:Int,day:String){
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
 
     Column(
         horizontalAlignment=
@@ -637,7 +672,7 @@ fun GraphBar(value:Int,day:String){
 
         Text(
             day,
-            color=Color.White
+            color=textColorMain
         )
 
     }
@@ -649,6 +684,9 @@ fun PlanCard(
     title:String,
     time:String
 ){
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
+    val cardBgColorSecondary = if (isDark) Color(0xFF1A2033) else Color(0xFFFFFFFF)
 
     Card(
         modifier=
@@ -656,8 +694,7 @@ fun PlanCard(
 
         colors=
             CardDefaults.cardColors(
-                containerColor=
-                    Color(0xFF1A2033)
+                containerColor=cardBgColorSecondary
             )
     ){
 
@@ -675,7 +712,7 @@ fun PlanCard(
 
                 Text(
                     title,
-                    color=Color.White
+                    color=textColorMain
                 )
 
                 Text(
@@ -689,7 +726,7 @@ fun PlanCard(
 
             Text(
                 time,
-                color=Color.White
+                color=textColorMain
             )
 
         }
@@ -702,6 +739,10 @@ fun SmallStatCard(
     title: String,
     value: String
 ) {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
+    val textColorSecondary = if (isDark) Color.Gray else Color(0xFF6B7280)
+    val cardBgColor = if (isDark) Color(0xFF1B2235) else Color(0xFFFFFFFF)
 
     Card(
 
@@ -710,8 +751,7 @@ fun SmallStatCard(
 
         colors =
             CardDefaults.cardColors(
-                containerColor =
-                    Color(0xFF1B2235)
+                containerColor = cardBgColor
             )
 
     ) {
@@ -730,7 +770,7 @@ fun SmallStatCard(
 
             Text(
                 text = title,
-                color = Color.Gray
+                color = textColorSecondary
             )
 
             Spacer(
@@ -739,7 +779,7 @@ fun SmallStatCard(
 
             Text(
                 text = value,
-                color = Color.White,
+                color = textColorMain,
                 style =
                     MaterialTheme.typography.headlineSmall
             )
@@ -748,4 +788,47 @@ fun SmallStatCard(
 
     }
 
+}
+@Composable
+fun StatCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    value: String
+) {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
+    val textColorSecondary = if (isDark) Color.Gray else Color(0xFF6B7280)
+    val cardBgColor = if (isDark) Color(0xFF1B2235) else Color(0xFFFFFFFF)
+
+    Card(
+        modifier = modifier.height(90.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = cardBgColor
+        ),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            Text(
+                text = value,
+                color = textColorMain,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = title,
+                color = textColorSecondary,
+                fontSize = 12.sp
+            )
+        }
+    }
 }

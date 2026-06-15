@@ -153,12 +153,8 @@ fun ProfileScreen(
                     color = Color.Gray
                 )
 
-                val premiumActive = (profile?.premiumUntil ?: 0L) > System.currentTimeMillis()
                 Text(
-                    if (premiumActive)
-                        "Premium: ${profile?.premiumPlan.orEmpty()}"
-                    else
-                        "Free Plan",
+                    "Student Account",
                     color = Color(0xFF8B3DFF)
                 )
             }

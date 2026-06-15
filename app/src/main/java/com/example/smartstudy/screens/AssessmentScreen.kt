@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.*
 
 data class AssessmentCourse(
     val title:String,
@@ -22,6 +23,21 @@ data class AssessmentCourse(
 
 @Composable
 fun AssessmentScreen() {
+
+    var selectedAssessment by remember {
+        mutableStateOf("")
+    }
+    when (selectedAssessment) {
+
+        "java_assessment" -> {
+            TopicTestScreen(
+                onBack = {
+                    selectedAssessment = ""
+                }
+            )
+            return
+        }
+    }
 
     // Temporary enrolled courses
 
@@ -101,14 +117,18 @@ fun AssessmentScreen() {
 
         }
 
-        items(enrolledCourses){ course ->
+        items(enrolledCourses) { course ->
 
-            AssessmentCard(course)
+            AssessmentCard(
+                course = course,
+                onAssessmentClick = {
+                    selectedAssessment = "java_assessment"
+                }
+            )
 
             Spacer(
                 Modifier.height(15.dp)
             )
-
         }
 
     }
@@ -117,7 +137,8 @@ fun AssessmentScreen() {
 
 @Composable
 fun AssessmentCard(
-    course: AssessmentCourse
+    course: AssessmentCourse,
+    onAssessmentClick: () -> Unit
 ){
 
     Card(
@@ -184,22 +205,9 @@ fun AssessmentCard(
             )
 
             Button(
-
-                onClick = { },
-
-                modifier=
-                    Modifier.fillMaxWidth(),
-
-                colors=
-                    ButtonDefaults.buttonColors(
-                        containerColor=
-                            Color(0xFF8B3DFF)
-                    )
-
+                onClick = onAssessmentClick
             ) {
-
                 Text("Start Assessment")
-
             }
 
         }

@@ -180,6 +180,14 @@ fun PlannerScreen() {
         Button(
             onClick = {
                 if (subject.isNotBlank() && time.isNotBlank()) {
+                    val isDuplicate = plans.any {
+                        it.subject.equals(subject.trim(), ignoreCase = true) &&
+                        it.time.equals(time.trim(), ignoreCase = true)
+                    }
+                    if (isDuplicate) {
+                        error = "A task is already scheduled at this time"
+                        return@Button
+                    }
                     backend.addPlan(subject, time, priority) { result ->
                         result
                             .onSuccess {

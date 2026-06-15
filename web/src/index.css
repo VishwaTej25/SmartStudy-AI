@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --font-primary: 'Inter', sans-serif;
+  --font-display: 'Outfit', sans-serif;
+
+  /* Colors */
+  --bg-primary: #050b1a;
+  --bg-secondary: #0a1b55;
+  --card-bg: rgba(27, 34, 53, 0.7);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --primary-color: #8b3dff;
+  --primary-hover: #7c3aed;
+  --accent-color: #00b894;
+  --text-main: #ffffff;
+  --text-muted: #9ca3af;
+  --text-dark: #6b7280;
+  
+  /* Layout */
+  --sidebar-width: 260px;
+  --transition-speed: 0.3s;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(5, 11, 26, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 61, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 61, 255, 0.6);
+}
+
+/* Micro-animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Interactive elements */
+button, .clickable {
+  cursor: pointer;
+  transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:active, .clickable:active {
+  transform: scale(0.97);
+}
+
+/* Custom inputs styling */
+input, select, textarea {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: var(--text-main);
+  font-family: var(--font-primary);
+  outline: none;
+  transition: all var(--transition-speed);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(139, 61, 255, 0.25);
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 0px;
+  }
+}
