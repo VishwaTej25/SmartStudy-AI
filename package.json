@@ -1,0 +1,14 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "https://VishwaTej25.github.io/SmartStudy-AI",
+  "scripts": {
+    "build": "npm run build --prefix web",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d web/dist"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  }
+}
