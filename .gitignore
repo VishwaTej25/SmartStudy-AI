@@ -29,4 +29,5 @@ dist/
 
 # Test Reports
 tests/appium/reports/
+tests/selenium/reports/
 

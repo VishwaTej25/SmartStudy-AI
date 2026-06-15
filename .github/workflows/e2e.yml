@@ -28,6 +28,26 @@ jobs:
         run: |
           python tests/appium/generate_md_report.py tests/appium/reports/appium_test_report.md
 
-      - name: Publish Test Report Summary
+      - name: Publish Appium Test Report Summary
         run: |
           cat tests/appium/reports/appium_test_report.md >> $GITHUB_STEP_SUMMARY
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Selenium Web Test Dependencies
+        run: |
+          cd tests/selenium
+          npm install
+
+      - name: Run Selenium Web E2E Test Suite
+        run: |
+          cd tests/selenium
+          node run_tests.js
+
+      - name: Publish Selenium Test Report Summary
+        run: |
+          cat tests/selenium/reports/selenium_test_report.md >> $GITHUB_STEP_SUMMARY
+
