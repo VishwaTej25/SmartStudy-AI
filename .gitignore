@@ -31,4 +31,7 @@ dist/
 tests/appium/reports/
 tests/selenium/reports/
 *.xlsx
+automated_test/*report.json
+automated_test/*FINAL.json
+
 

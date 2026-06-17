@@ -10,9 +10,6 @@ interface AuthProps {
   onLoginSuccess: () => void;
 }
 
-const ADMIN_EMAIL = "admin123@gmail.com";
-const ADMIN_PASSWORD = "admin";
-
 export const Auth: React.FC<AuthProps> = ({ onLoginSuccess }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
@@ -53,24 +50,7 @@ export const Auth: React.FC<AuthProps> = ({ onLoginSuccess }) => {
         });
       } else {
         // ── Sign In flow ──────────────────────────────────────────────────
-        // Admin shortcut: bypass Firebase for the admin account
-        // (Firebase requires min 6-char passwords, "admin" is 5)
-        if (trimmedEmail === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-          // Sign in via Firebase using the stored admin account.
-          // If it doesn't exist yet, create it automatically.
-          try {
-            await signInWithEmailAndPassword(auth, ADMIN_EMAIL, "admin123");
-          } catch (firstErr: any) {
-            if (firstErr.code === "auth/user-not-found" || firstErr.code === "auth/invalid-credential") {
-              // Create the admin account on first use
-              await createUserWithEmailAndPassword(auth, ADMIN_EMAIL, "admin123");
-            } else {
-              throw firstErr;
-            }
-          }
-        } else {
-          await signInWithEmailAndPassword(auth, trimmedEmail, password);
-        }
+        await signInWithEmailAndPassword(auth, trimmedEmail, password);
       }
 
       onLoginSuccess();
@@ -190,12 +170,6 @@ export const Auth: React.FC<AuthProps> = ({ onLoginSuccess }) => {
           </button>
         </div>
 
-        {!isSignUp && (
-          <p style={styles.adminHint}>
-            Admin? Use <code style={{ color: "#a78bfa" }}>admin123@gmail.com</code>{" "}
-            / <code style={{ color: "#a78bfa" }}>admin</code>
-          </p>
-        )}
       </div>
     </div>
   );

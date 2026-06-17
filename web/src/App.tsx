@@ -18,10 +18,9 @@ import { Assessment } from "./components/Assessment";
 import { Profile } from "./components/Profile";
 import { AdminPortal } from "./components/AdminPortal";
 
-const ADMIN_EMAIL = "admin123@gmail.com";
-
 function App() {
   const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentTab, setCurrentTab] = useState("dashboard");
   const [userProfile, setUserProfile] = useState<any>(null);
@@ -33,10 +32,18 @@ function App() {
 
   // ─── Auth Listener ────────────────────────────────────────────────────────
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-      setLoading(false);
-      if (!currentUser) {
+      if (currentUser) {
+        try {
+          const idTokenResult = await currentUser.getIdTokenResult();
+          setIsAdmin(!!idTokenResult.claims.admin);
+        } catch (err) {
+          console.error("Error fetching custom claims:", err);
+          setIsAdmin(false);
+        }
+      } else {
+        setIsAdmin(false);
         setUserProfile(null);
         setEnrolledCourseIds(new Set());
         setEnrollments({});
@@ -44,13 +51,14 @@ function App() {
         setSelectedCourse(null);
         setCurrentTab("dashboard");
       }
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
 
   // ─── Firestore Listeners (non-admin users) ────────────────────────────────
   useEffect(() => {
-    if (!user || user.email === ADMIN_EMAIL) return;
+    if (!user || isAdmin) return;
 
     const profileRef = doc(db, "users", user.uid);
     const unsubProfile = onSnapshot(profileRef, (docSnap) => {
@@ -128,7 +136,7 @@ function App() {
   }
 
   // ─── Admin Portal ─────────────────────────────────────────────────────────
-  if (user.email === ADMIN_EMAIL) {
+  if (isAdmin) {
     return (
       <div style={{ minHeight: "100vh", padding: "40px" }}>
         <AdminPortal onBack={() => { auth.signOut(); }} />

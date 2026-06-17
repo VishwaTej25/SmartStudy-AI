@@ -10,15 +10,33 @@ service cloud.firestore {
       return signedIn() && request.auth.uid == userId;
     }
 
+    // [SECURITY FIX] Field-level validation: blocks self-grant of premium,
+    // XP, streak, and role fields directly via Firestore REST API.
+    function noSensitiveFields() {
+      return !('premiumPlan'  in request.resource.data) &&
+             !('premiumUntil' in request.resource.data) &&
+             !('xp'           in request.resource.data) &&
+             !('streak'       in request.resource.data) &&
+             !('role'         in request.resource.data);
+    }
+
     match /courses/{courseId} {
       allow read: if signedIn();
       allow write: if false;
+
+      match /topics/{topicId} {
+        allow read: if signedIn();
+        allow write: if false;
+      }
     }
 
     match /users/{userId} {
-      allow read: if signedIn();
+      // [SECURITY FIX] Changed from signedIn() → owns(userId)
+      // Prevents any authenticated user from reading other users' profiles (IDOR).
+      allow read:   if owns(userId);
       allow create: if owns(userId);
-      allow update: if owns(userId);
+      // [SECURITY FIX] Added noSensitiveFields() — blocks premium/xp/streak self-assignment.
+      allow update: if owns(userId) && noSensitiveFields();
       allow delete: if false;
 
       match /enrollments/{enrollmentId} {

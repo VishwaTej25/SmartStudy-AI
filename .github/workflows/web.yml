@@ -14,7 +14,6 @@ on:
 jobs:
   build-web:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -28,7 +27,7 @@ jobs:
 
       - name: Install Dependencies
         working-directory: web
-        run: npm install
+        run: npm ci
 
       - name: Lint (TypeScript Check)
         working-directory: web
@@ -53,29 +52,15 @@ jobs:
       contents: read
       pages: write
       id-token: write
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: web/package-lock.json
-
-      - name: Install Dependencies
-        working-directory: web
-        run: npm install
-
-      - name: Build Production Bundle
-        working-directory: web
-        run: npm run build
+          name: smartstudy-web-dist
+          path: web/dist/
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
