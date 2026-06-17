@@ -5,14 +5,13 @@ from openpyxl.styles import Font, Alignment, PatternFill
 
 def load_test_cases(file_path: Path):
     text = file_path.read_text(encoding='utf-8')
-    # Extract the list assigned to TEST_CASES
-    match = re.search(r"TEST_CASES\s*=\s*(\[.*?\])", text, re.DOTALL)
-    if not match:
-        raise ValueError('Could not find TEST_CASES definition')
-    list_str = match.group(1)
-    # Safely evaluate the list of dicts
-    test_cases = ast.literal_eval(list_str)
-    return test_cases
+    tree = ast.parse(text)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name) and target.id == 'TEST_CASES':
+                    return ast.literal_eval(node.value)
+    raise ValueError('Could not find TEST_CASES definition')
 
 def generate_excel(test_cases, output_path: Path):
     wb = Workbook()

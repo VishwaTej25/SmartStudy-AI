@@ -2,6 +2,10 @@ import os
 import sys
 import time
 import random
+
+# Ensure tests/appium is in sys.path so we can import local modules when run from root
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy

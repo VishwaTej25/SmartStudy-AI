@@ -1,5 +1,9 @@
 import os
 import sys
+
+# Ensure tests/appium is in sys.path so we can import local modules when run from root
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from generate_test_suite_report import generate_markdown_report
 
 if __name__ == "__main__":

@@ -28,7 +28,7 @@ jobs:
 
       - name: Install Dependencies
         working-directory: web
-        run: npm ci
+        run: npm install
 
       - name: Lint (TypeScript Check)
         working-directory: web
@@ -71,7 +71,7 @@ jobs:
 
       - name: Install Dependencies
         working-directory: web
-        run: npm ci
+        run: npm install
 
       - name: Build Production Bundle
         working-directory: web

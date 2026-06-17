@@ -995,64 +995,6 @@ def create_styled_excel(filename):
     for col, width in col_widths.items():
         ws_pass.column_dimensions[col].width = width
 
-    
-    os.makedirs(os.path.dirname(filename), exist_ok=True)
-        
-
-        
-        'B': 22,  # Category
-        'C': 32,  # Test Case Name
-        'D': 40,  # Description
-        'E': 45,  # Steps
-        'F': 40,  # Expected Result
-        'G': 12,  # Status
-        'H': 12,  # Duration (s)
-        'I': 55   # Error Log
-    }
-    # Apply to Details sheet
-    for col, width in col_widths.items():
-        ws_details.column_dimensions[col].width = width
-
-    # ------------------ SHEET 3: ONLY PASSED TEST CASES ------------------
-    ws_pass = wb.create_sheet("Passed Test Cases")
-    ws_pass.views.sheetView[0].showGridLines = True
-
-    # Headers (same as details)
-    ws_pass.append(headers)
-    ws_pass.row_dimensions[1].height = 26
-    for col_idx, header in enumerate(headers, 1):
-        cell = ws_pass.cell(row=1, column=col_idx)
-        cell.font = font_header
-        cell.fill = fill_header
-        cell.alignment = align_center
-        cell.border = border_thin
-
-    # Data rows: only passed test cases
-    for idx, tc in enumerate([tc for tc in TEST_CASES if tc["status"] == "PASS"], 2):
-        row_data = [
-            tc["id"], tc["category"], tc["name"], tc["desc"],
-            tc["steps"], tc["expected"], tc["status"], tc["time"],
-            tc.get("error", "")
-        ]
-        ws_pass.append(row_data)
-        ws_pass.row_dimensions[idx].height = 50
-        for col_idx in range(1, 10):
-            cell = ws_pass.cell(row=idx, column=col_idx)
-            cell.font = font_body
-            cell.border = border_thin
-            if col_idx in [1, 7, 8]:
-                cell.alignment = align_center
-            else:
-                cell.alignment = align_left
-            if idx % 2 == 0:
-                cell.fill = fill_zebra
-            if col_idx == 7:
-                cell.font = font_body_bold
-                cell.fill = fill_pass
-
-    # Apply column widths to Passed sheet
-    for col, width in col_widths.items():
-        ws_pass.column_dimensions[col].width = width
 
     # Create reports directory if not exists
     os.makedirs(os.path.dirname(filename), exist_ok=True)
