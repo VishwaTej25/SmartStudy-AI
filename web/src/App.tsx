@@ -18,6 +18,7 @@ import { Assessment } from "./components/Assessment";
 import { Profile } from "./components/Profile";
 import { AdminPortal } from "./components/AdminPortal";
 
+// SmartStudy AI Main Application Entry Point
 function App() {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
