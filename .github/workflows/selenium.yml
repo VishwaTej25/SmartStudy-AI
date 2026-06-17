@@ -31,7 +31,7 @@ jobs:
         run: |
           # Build the web app
           cd web
-          npm ci
+          npm install
           npm run build
 
           # Serve the app on all interfaces in background
@@ -52,7 +52,7 @@ jobs:
 
           # Install Selenium test dependencies and run tests
           cd ../tests/selenium
-          npm ci
+          npm install
           node run_tests.js || true
 
           # Clean up the web server process
