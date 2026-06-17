@@ -7,11 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,6 +19,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.smartstudy.backend.BackendProvider
+import com.example.smartstudy.backend.UserProfile
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,456 +28,174 @@ fun HomeContent() {
 
     val context = LocalContext.current
 
-    val drawerState =
-        rememberDrawerState(
-            initialValue = DrawerValue.Closed
+    // ── Real user profile from Firestore ──────────────────────────────────
+    var userProfile by remember { mutableStateOf<UserProfile?>(null) }
+    DisposableEffect(Unit) {
+        val reg = BackendProvider.backend.listenProfile(
+            onUpdate = { userProfile = it },
+            onError  = { /* silently ignore */ }
         )
+        onDispose { reg?.remove() }
+    }
 
-    val scope = rememberCoroutineScope()
+    val firstName = userProfile?.fullName
+        ?.split(" ")
+        ?.firstOrNull()
+        ?.takeIf { it.isNotBlank() }
+        ?: "there"
+
+    val streak = userProfile?.streak ?: 0
 
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-    val backgroundColor = if (isDark) Color(0xFF050B1A) else Color(0xFFF3F4F6)
-    val backgroundEndColor = if (isDark) Color(0xFF0A1B55) else Color(0xFFE5E7EB)
-    val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
-    val textColorMuted = if (isDark) Color.LightGray else Color(0xFF4B5563)
-    val textColorSecondary = if (isDark) Color.Gray else Color(0xFF6B7280)
-    val cardBgColor = if (isDark) Color(0xFF1B2235) else Color(0xFFFFFFFF)
-    val cardBgColorSecondary = if (isDark) Color(0xFF1A2033) else Color(0xFFFFFFFF)
+    val backgroundColor     = if (isDark) Color(0xFF050B1A) else Color(0xFFF3F4F6)
+    val backgroundEndColor  = if (isDark) Color(0xFF0A1B55) else Color(0xFFE5E7EB)
+    val textColorMain       = if (isDark) Color.White      else Color(0xFF1F2937)
+    val textColorMuted      = if (isDark) Color.LightGray  else Color(0xFF4B5563)
+    val textColorSecondary  = if (isDark) Color.Gray       else Color(0xFF6B7280)
+    val cardBgColor         = if (isDark) Color(0xFF1B2235) else Color(0xFFFFFFFF)
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     ModalNavigationDrawer(
         drawerState = drawerState,
-
         drawerContent = {
-
             ModalDrawerSheet {
-
                 Spacer(Modifier.height(20.dp))
-
                 Text(
                     "Smart Study AI 🚀",
                     modifier = Modifier.padding(16.dp),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
-
                 NavigationDrawerItem(
                     label = { Text("🏠 Home") },
                     selected = true,
                     onClick = {}
                 )
-
                 NavigationDrawerItem(
                     label = { Text("🏆 Leaderboard") },
                     selected = false,
                     onClick = {
-                        Toast.makeText(
-                            context,
-                            "Leaderboard",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(context, "Leaderboard", Toast.LENGTH_SHORT).show()
                     }
                 )
-
                 NavigationDrawerItem(
                     label = { Text("⚙ Settings") },
                     selected = false,
                     onClick = {
-                        Toast.makeText(
-                            context,
-                            "Settings",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(context, "Settings", Toast.LENGTH_SHORT).show()
                     }
                 )
-
                 NavigationDrawerItem(
                     label = { Text("🚪 Logout") },
                     selected = false,
                     onClick = {
-                        Toast.makeText(
-                            context,
-                            "Logout",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(context, "Logout", Toast.LENGTH_SHORT).show()
                     }
                 )
-
             }
-
         }
-
     ) {
-
         LazyColumn(
-
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            listOf(
-                                backgroundColor,
-                                backgroundEndColor
-                            )
-                        )
-                    )
-                    .padding(16.dp)
-
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(listOf(backgroundColor, backgroundEndColor))
+                )
+                .padding(16.dp)
         ) {
 
+            // ── Greeting ──────────────────────────────────────────────────
             item {
+                Spacer(Modifier.height(10.dp))
 
-
-                Spacer(
-                    Modifier.height(10.dp)
-                )
-
-                Row(
-                    modifier =
-                        Modifier.fillMaxWidth(),
-
-                    horizontalArrangement =
-                        Arrangement.SpaceBetween,
-
-                    verticalAlignment =
-                        Alignment.CenterVertically
-                ) {
-
-                    Row(
-                        verticalAlignment =
-                            Alignment.CenterVertically
-                    ) {
-
-                        Spacer(
-                            Modifier.width(8.dp)
-                        )
-
-                        Column {
-
-                            Text(
-                                text = "Welcome Back 👋",
-                                color = textColorSecondary,
-                                fontSize = 16.sp
-                            )
-
-                            Spacer(
-                                Modifier.height(4.dp)
-                            )
-
-                            Text(
-                                text = "Vishwa",
-                                color = textColorMain,
-                                fontSize = 32.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-
-                            Spacer(
-                                Modifier.height(4.dp)
-                            )
-
-                            Text(
-                                text = "Let's continue your learning journey 🚀",
-                                color = textColorMuted,
-                                fontSize = 14.sp
-                            )
-
-                        }
-
-                    }
-
-
-
+                Column {
+                    Text(
+                        text = "Welcome Back 👋",
+                        color = textColorSecondary,
+                        fontSize = 16.sp
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        text = firstName,
+                        color = textColorMain,
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        text = "Let's continue your learning journey 🚀",
+                        color = textColorMuted,
+                        fontSize = 14.sp
+                    )
                 }
 
-                Spacer(
-                    Modifier.height(20.dp)
-                )
+                Spacer(Modifier.height(20.dp))
+            }
 
-
+            // ── Streak Card (real data) ────────────────────────────────────
+            item {
                 Card(
-                    shape =
-                        RoundedCornerShape(20.dp),
-
-                    colors =
-                        CardDefaults.cardColors(
-                            containerColor =
-                                Color(0xFF8B3DFF)
-                        )
-                ) {
-
-                    Row(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(24.dp),
-
-                        horizontalArrangement =
-                            Arrangement.SpaceBetween
-                    ) {
-
-                        Column {
-
-                            Text(
-                                "🔥 Study Streak",
-                                color = Color.White
-                            )
-
-                            Spacer(
-                                Modifier.height(10.dp)
-                            )
-
-                            Text(
-                                "7 Days",
-                                color = Color.White,
-                                fontSize = 38.sp,
-                                fontWeight = FontWeight.ExtraBold
-                            )
-
-                            Text(
-                                "Keep your streak alive!",
-                                color = Color.White.copy(alpha = 0.8f)
-                            )
-
-                        }
-
-                        Box(
-                            modifier =
-                                Modifier
-                                    .size(80.dp)
-                                    .clip(CircleShape)
-                                    .background(
-                                        Color(0xFF6F2BFF)
-                                    ),
-
-                            contentAlignment =
-                                Alignment.Center
-                        ) {
-
-                            Text(
-                                "🔥",
-                                fontSize = 34.sp
-                            )
-
-                        }
-
-                    }
-
-                }
-
-                Spacer(Modifier.height(25.dp))
-
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = cardBgColor
-                    ),
-                    shape = RoundedCornerShape(20.dp)
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF8B3DFF))
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(20.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                            .padding(24.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-
+                        Column {
+                            Text("🔥 Study Streak", color = Color.White)
+                            Spacer(Modifier.height(10.dp))
+                            Text(
+                                text = if (streak > 0) "$streak Days" else "Start Today!",
+                                color = Color.White,
+                                fontSize = 38.sp,
+                                fontWeight = FontWeight.ExtraBold
+                            )
+                            Text(
+                                text = if (streak > 0) "Keep your streak alive!" else "Complete a lesson to begin 🎯",
+                                color = Color.White.copy(alpha = 0.8f)
+                            )
+                        }
                         Box(
                             modifier = Modifier
-                                .size(60.dp)
+                                .size(80.dp)
                                 .clip(CircleShape)
-                                .background(Color(0xFF8B3DFF)),
+                                .background(Color(0xFF6F2BFF)),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = "V",
-                                color = Color.White,
-                                fontSize = 26.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.width(16.dp))
-
-                        Column {
-
-                            Text(
-                                text = "Vishwa",
-                                color = textColorMain,
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-
-                            Text(
-                                text = "B.Tech - CSE",
-                                color = textColorMuted
-                            )
-
-                            Text(
-                                text = "SIMATS University",
-                                color = textColorSecondary
-                            )
-
-                            Spacer(modifier = Modifier.height(6.dp))
-
-                            Text(
-                                text = "Keep Learning 🚀",
-                                color = Color(0xFF8B5CF6)
-                            )
+                            Text("🔥", fontSize = 34.sp)
                         }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(Modifier.height(20.dp))
+            }
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-
-                    StatCard(
-                        modifier = Modifier.weight(1f),
-                        title = "Courses",
-                        value = "4"
-                    )
-
-                    StatCard(
-                        modifier = Modifier.weight(1f),
-                        title = "Tests",
-                        value = "2"
-                    )
-
-                    StatCard(
-                        modifier = Modifier.weight(1f),
-                        title = "Avg Score",
-                        value = "85%"
-                    )
-                }
-                Spacer(
-                    Modifier.height(25.dp)
-                )
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = cardBgColor
-                    ),
-                    shape = RoundedCornerShape(20.dp)
-                ) {
-
-                    Column(
-                        modifier = Modifier.padding(18.dp)
-                    ) {
-
-                        Text(
-                            text = "📚 Course Progress",
-                            color = textColorMain,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        LinearProgressIndicator(
-                            progress = { 0.72f },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(8.dp),
-                            color = Color(0xFF8B3DFF)
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Text(
-                            text = "72% Completed",
-                            color = Color(0xFF8B3DFF),
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
+            // ── Quick Access ───────────────────────────────────────────────
+            item {
                 Text(
                     "Quick Access",
                     color = textColorMain,
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Bold
                 )
-
                 Spacer(Modifier.height(15.dp))
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement =
-                        Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-
-                    QuickCard("Courses","📚")
-                    QuickCard("AI","✅")
-                    QuickCard("Progress","🎯")
-                    QuickCard("Rank","📈")
-
+                    QuickCard("Courses", "📚")
+                    QuickCard("AI", "✅")
+                    QuickCard("Progress", "🎯")
+                    QuickCard("Rank", "📈")
                 }
-
-                Spacer(Modifier.height(30.dp))
-
-                SectionCard(
-                    "AI Prediction Score",
-                    "91% probability of scoring above A grade"
-                )
-
-                Spacer(Modifier.height(25.dp))
-
-                SectionCard(
-                    "Continue Learning",
-                    "DSA + Java Interview Prep - 72%"
-                )
-
-                Spacer(Modifier.height(25.dp))
-
-                WeeklyGraph()
-
-                Spacer(Modifier.height(25.dp))
-
-                Text(
-                    "Today's Plan",
-                    color=textColorMain,
-                    fontSize=24.sp,
-                    fontWeight=FontWeight.Bold
-                )
-
-                Spacer(
-                    Modifier.height(10.dp)
-                )
-
-                PlanCard(
-                    "Practice DSA Problems",
-                    "11:00 AM"
-                )
-
-                Spacer(
-                    Modifier.height(10.dp)
-                )
-
-                PlanCard(
-                    "Java Interview Questions",
-                    "02:00 PM"
-                )
-
-                Spacer(
-                    Modifier.height(100.dp)
-                )
-
+                Spacer(Modifier.height(100.dp))
             }
-
         }
-
     }
-
 }
 
 @Composable

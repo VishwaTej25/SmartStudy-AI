@@ -3,13 +3,12 @@ package com.example.smartstudy.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.Book
-import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -70,6 +69,9 @@ fun BottomNavBar(
                         }
                                                 "Theory" -> {
                             selectedItem = 9
+                        }
+                        "Settings" -> {
+                            selectedItem = 8
                         }
                         "Logout" -> {
                             onLogout()
@@ -153,10 +155,7 @@ fun BottomNavBar(
                 )
             },
             bottomBar = {
-                NavigationBar(
-                    containerColor =
-                        Color(0xFF111827)
-                ) {
+                NavigationBar {
                     NavigationBarItem(
                         selected = selectedItem == 0,
                         onClick = { selectedItem = 0 },
@@ -170,16 +169,10 @@ fun BottomNavBar(
                         label = { Text("Courses") }
                     )
                     NavigationBarItem(
-                        selected = selectedItem == 5,
-                        onClick = { selectedItem = 5 },
-                        icon = { Icon(Icons.Default.Code, contentDescription = null) },
-                        label = { Text("Practice") }
-                    )
-                    NavigationBarItem(
-                        selected = selectedItem == 4,
-                        onClick = { selectedItem = 4 },
-                        icon = { Icon(Icons.Default.Assignment, contentDescription = null) },
-                        label = { Text("Assessment") }
+                        selected = selectedItem == 2,
+                        onClick = { selectedItem = 2 },
+                        icon = { Icon(Icons.Default.SmartToy, contentDescription = null) },
+                        label = { Text("AI") }
                     )
                     NavigationBarItem(
                         selected = selectedItem == 3,
@@ -205,7 +198,7 @@ fun BottomNavBar(
                     5 -> PracticeScreen()
                     6 -> PlannerScreen()
                     7 -> LeaderboardScreen()
-                    8 -> SettingsScreen(onLogout = onLogout)
+                    8 -> SettingsScreen(onBack = { selectedItem = 0 }, onLogout = onLogout)
                     9 -> TheoryQuestionsScreen(onBack = { selectedItem = 0 })
                     10 -> NotificationScreen()
                 }

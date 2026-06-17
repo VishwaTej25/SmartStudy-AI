@@ -22,6 +22,7 @@ export const Auth: React.FC<AuthProps> = ({ onLoginSuccess }) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -77,11 +78,11 @@ export const Auth: React.FC<AuthProps> = ({ onLoginSuccess }) => {
       // Friendly error messages
       const code = err.code || "";
       if (code === "auth/user-not-found" || code === "auth/invalid-credential") {
-        setError("No account found with this email. Please sign up first.");
+        setError("No user record corresponding to this identifier");
       } else if (code === "auth/wrong-password") {
         setError("Incorrect password. Please try again.");
       } else if (code === "auth/email-already-in-use") {
-        setError("This email is already registered. Please sign in.");
+        setError("Email already in use");
       } else if (code === "auth/weak-password") {
         setError("Password must be at least 6 characters.");
       } else {
@@ -93,7 +94,8 @@ export const Auth: React.FC<AuthProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className="animate-fade-in">
+
       {/* Decorative blobs */}
       <div style={styles.blobPurple} />
       <div style={styles.blobBlue} />

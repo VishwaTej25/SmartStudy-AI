@@ -7,6 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import com.example.smartstudy.backend.BackendProvider
+import com.example.smartstudy.backend.UserSettings
 import com.example.smartstudy.navigation.BottomNavBar
 import com.example.smartstudy.screens.AuthScreen
 import com.example.smartstudy.screens.SplashScreen
@@ -31,6 +32,21 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf(true)
             }
 
+            // Listen to Firestore settings to sync dark mode
+            DisposableEffect(isLoggedIn) {
+                if (!isLoggedIn) {
+                    onDispose { }
+                } else {
+                    val reg = BackendProvider.backend.listenSettings(
+                        onUpdate = { settings ->
+                            darkTheme = settings.darkMode
+                        },
+                        onError = { /* ignore */ }
+                    )
+                    onDispose { reg?.remove() }
+                }
+            }
+
             MaterialTheme(
 
                 colorScheme =
@@ -39,7 +55,9 @@ class MainActivity : ComponentActivity() {
                             primary=Color(0xFF7C3AED)
                         )
                     else
-                        lightColorScheme()
+                        lightColorScheme(
+                            primary=Color(0xFF7C3AED)
+                        )
 
             ){
 
@@ -80,9 +98,12 @@ class MainActivity : ComponentActivity() {
                             darkTheme=darkTheme,
 
                             onThemeChange={
-
-                                darkTheme=!darkTheme
-
+                                val newDark = !darkTheme
+                                darkTheme = newDark
+                                // Also persist to Firestore
+                                BackendProvider.backend.updateSettings(
+                                    UserSettings(darkMode = newDark)
+                                )
                             },
 
                             onLogout={

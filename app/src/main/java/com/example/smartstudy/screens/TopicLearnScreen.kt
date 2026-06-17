@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -241,21 +242,22 @@ fun VideoScreen(
     courseName: String = "the Course",
     onBack: () -> Unit
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     val backgroundColor = if (isDark) Color(0xFF0A0A14) else Color(0xFFF3F4F6)
     val cardBg = if (isDark) Color(0xFF1B2235) else Color(0xFFFFFFFF)
     val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
     val textColorMuted = if (isDark) Color(0xFF9CA3AF) else Color(0xFF6B7280)
 
-    // Static curated video lectures for any course (dynamic label)
+    // Video topics with YouTube search queries
     val videos = listOf(
-        Triple("Introduction & Overview", "Foundational concepts of $courseName", "12:34"),
-        Triple("Core Principles Explained", "Deep dive into $courseName key principles", "18:21"),
-        Triple("OOPs Concepts & Theory", "OOP design patterns and concepts for $courseName", "22:05"),
-        Triple("Data Structures in $courseName", "Common data structures and algorithms applied", "15:48"),
-        Triple("Practical Examples", "Coding walkthroughs and real-world scenarios", "27:14"),
-        Triple("Advanced Topics", "In-depth advanced $courseName techniques", "31:09"),
-        Triple("Interview Preparation", "Top interview questions and answers for $courseName", "20:33")
+        Triple("Introduction & Overview", "Foundational concepts of $courseName", "$courseName introduction tutorial"),
+        Triple("Core Principles Explained", "Deep dive into $courseName key principles", "$courseName core concepts explained"),
+        Triple("OOPs Concepts & Theory", "OOP design patterns and concepts for $courseName", "$courseName OOPs concepts tutorial"),
+        Triple("Data Structures in $courseName", "Common data structures and algorithms applied", "$courseName data structures tutorial"),
+        Triple("Practical Examples", "Coding walkthroughs and real-world scenarios", "$courseName practical coding examples"),
+        Triple("Advanced Topics", "In-depth advanced $courseName techniques", "$courseName advanced topics tutorial"),
+        Triple("Interview Preparation", "Top interview questions and answers for $courseName", "$courseName interview questions")
     )
 
     val accentColor = Color(0xFF8B3DFF)
@@ -290,7 +292,7 @@ fun VideoScreen(
             }
             Spacer(Modifier.height(4.dp))
             Text(
-                text = "Curated lectures for $courseName",
+                text = "Tap a video to watch on YouTube",
                 color = textColorMuted,
                 fontSize = 13.sp,
                 modifier = Modifier.padding(horizontal = 20.dp)
@@ -298,11 +300,19 @@ fun VideoScreen(
             Spacer(Modifier.height(16.dp))
         }
 
-        items(videos) { (title, desc, duration) ->
+        items(videos) { (title, desc, searchQuery) ->
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 6.dp),
+                    .padding(horizontal = 16.dp, vertical = 6.dp)
+                    .clickable {
+                        val encoded = java.net.URLEncoder.encode(searchQuery, "UTF-8")
+                        val intent = android.content.Intent(
+                            android.content.Intent.ACTION_VIEW,
+                            android.net.Uri.parse("https://www.youtube.com/results?search_query=$encoded")
+                        )
+                        context.startActivity(intent)
+                    },
                 colors = CardDefaults.cardColors(containerColor = cardBg),
                 shape = RoundedCornerShape(16.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -327,7 +337,7 @@ fun VideoScreen(
                         Text(desc, color = textColorMuted, fontSize = 12.sp, maxLines = 2)
                     }
                     Text(
-                        text = duration,
+                        text = "▶ YouTube",
                         color = accentColor,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold

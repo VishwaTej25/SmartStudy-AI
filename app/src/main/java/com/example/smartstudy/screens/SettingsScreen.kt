@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
@@ -19,6 +20,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,6 +43,7 @@ import com.example.smartstudy.backend.UserSettings
 
 @Composable
 fun SettingsScreen(
+    onBack: (() -> Unit)? = null,
     onLogout: () -> Unit
 ) {
     val backend = remember { BackendProvider.backend }
@@ -56,12 +61,17 @@ fun SettingsScreen(
         }
     }
 
+    // Theme-aware colors
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val bgStart = if (isDark) Color(0xFF050B1A) else Color(0xFFF3F4F6)
+    val bgEnd = if (isDark) Color(0xFF0A1B55) else Color(0xFFE5E7EB)
+    val cardBg = if (isDark) Color(0xFF1A2033) else Color(0xFFFFFFFF)
+    val textMain = if (isDark) Color.White else Color(0xFF1F2937)
+    val textMuted = if (isDark) Color.Gray else Color(0xFF6B7280)
+    val accentColor = Color(0xFF8B3DFF)
+
     val backgroundBrush = Brush.verticalGradient(
-        colors = listOf(
-            Color(0xFF0B1020),
-            Color(0xFF121826),
-            Color(0xFF1E1B4B)
-        )
+        colors = listOf(bgStart, bgEnd)
     )
 
     Column(
@@ -73,17 +83,28 @@ fun SettingsScreen(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
+            if (onBack != null) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        tint = textMain
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+            }
+
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = null,
-                tint = Color(0xFF7C3AED)
+                tint = accentColor
             )
 
             Spacer(modifier = Modifier.width(10.dp))
 
             Text(
                 text = "Settings",
-                color = Color.White,
+                color = textMain,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -102,6 +123,8 @@ fun SettingsScreen(
         SettingsCard(
             title = "Dark Mode",
             checked = settings.darkMode,
+            textColor = textMain,
+            cardBg = cardBg,
             onCheckedChange = {
                 backend.updateSettings(settings.copy(darkMode = it)) { result ->
                     result.onFailure { failure -> error = failure.localizedMessage }
@@ -112,6 +135,8 @@ fun SettingsScreen(
         SettingsCard(
             title = "AI Voice Assistant",
             checked = settings.aiVoice,
+            textColor = textMain,
+            cardBg = cardBg,
             onCheckedChange = {
                 backend.updateSettings(settings.copy(aiVoice = it)) { result ->
                     result.onFailure { failure -> error = failure.localizedMessage }
@@ -122,6 +147,8 @@ fun SettingsScreen(
         SettingsCard(
             title = "Smart Notifications",
             checked = settings.notifications,
+            textColor = textMain,
+            cardBg = cardBg,
             onCheckedChange = {
                 backend.updateSettings(settings.copy(notifications = it)) { result ->
                     result.onFailure { failure -> error = failure.localizedMessage }
@@ -140,7 +167,7 @@ fun SettingsScreen(
                 .height(60.dp),
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF7C3AED)
+                containerColor = accentColor
             )
         ) {
             Icon(
@@ -164,6 +191,8 @@ fun SettingsScreen(
 fun SettingsCard(
     title: String,
     checked: Boolean,
+    textColor: Color,
+    cardBg: Color,
     onCheckedChange: (Boolean) -> Unit
 ) {
     Card(
@@ -172,7 +201,7 @@ fun SettingsCard(
             .padding(bottom = 18.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF1F2937)
+            containerColor = cardBg
         )
     ) {
         Row(
@@ -185,7 +214,7 @@ fun SettingsCard(
         ) {
             Text(
                 text = title,
-                color = Color.White,
+                color = textColor,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium
             )

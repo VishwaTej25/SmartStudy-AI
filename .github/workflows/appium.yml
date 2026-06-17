@@ -1,0 +1,33 @@
+name: Appium E2E Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  appium-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas openpyxl
+
+      - name: Run E2E Test Suite Report Generator
+        run: |
+          python tests/appium/generate_md_report.py tests/appium/reports/appium_test_report.md
+
+      - name: Publish Appium Test Report Summary
+        run: |
+          cat tests/appium/reports/appium_test_report.md >> $GITHUB_STEP_SUMMARY

@@ -438,7 +438,7 @@ const styles = {
     padding: "16px",
     margin: 0,
     fontSize: "0.9rem",
-    color: "#10b981",
+    color: "#ef4444",
     fontFamily: "monospace",
     whiteSpace: "pre-wrap" as const,
     lineHeight: "1.4rem",

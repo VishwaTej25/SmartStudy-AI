@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,6 +53,7 @@ fun ProfileScreen(
     var profile by remember { mutableStateOf<UserProfile?>(null) }
     var settings by remember { mutableStateOf(UserSettings()) }
     var error by remember { mutableStateOf<String?>(null) }
+    var showSettings by remember { mutableStateOf(false) }
 
     DisposableEffect(Unit) {
         val profileListener = backend.listenProfile(
@@ -68,115 +71,99 @@ fun ProfileScreen(
         }
     }
 
+    // If settings button was tapped, show SettingsScreen
+    if (showSettings) {
+        SettingsScreen(onBack = { showSettings = false }, onLogout = onLogout)
+        return
+    }
+
+    // Theme-aware colors
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val bgStart = if (isDark) Color(0xFF050B1A) else Color(0xFFF3F4F6)
+    val bgEnd = if (isDark) Color(0xFF0A1B55) else Color(0xFFE5E7EB)
+    val cardBg = if (isDark) Color(0xFF1A2033) else Color(0xFFFFFFFF)
+    val textMain = if (isDark) Color.White else Color(0xFF1F2937)
+    val textMuted = if (isDark) Color.Gray else Color(0xFF6B7280)
+    val accentColor = Color(0xFF8B3DFF)
+
     Column(
         modifier =
             Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(
-                        listOf(
-                            Color(0xFF050B1A),
-                            Color(0xFF0A1B55)
-                        )
-                    )
+                    Brush.verticalGradient(listOf(bgStart, bgEnd))
                 )
                 .padding(20.dp)
     ) {
-        Spacer(
-            Modifier.height(20.dp)
-        )
+        Spacer(Modifier.height(20.dp))
 
         Text(
             "Profile",
-            color = Color.White,
+            color = textMain,
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(
-            Modifier.height(20.dp)
-        )
+        Spacer(Modifier.height(20.dp))
 
         Card(
-            modifier =
-                Modifier.fillMaxWidth(),
-            colors =
-                CardDefaults.cardColors(
-                    containerColor =
-                        Color(0xFF1A2033)
-                ),
-            shape =
-                RoundedCornerShape(20.dp)
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = cardBg),
+            shape = RoundedCornerShape(20.dp)
         ) {
             Column(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp),
-                horizontalAlignment =
-                    Alignment.CenterHorizontally
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Surface(
-                    shape =
-                        CircleShape,
-                    color =
-                        Color(0xFF8B3DFF),
-                    modifier =
-                        Modifier.size(90.dp)
+                    shape = CircleShape,
+                    color = accentColor,
+                    modifier = Modifier.size(90.dp)
                 ) {
-                    Box(
-                        contentAlignment =
-                            Alignment.Center
-                    ) {
+                    Box(contentAlignment = Alignment.Center) {
                         Icon(
                             Icons.Default.Person,
                             null,
                             tint = Color.White,
-                            modifier =
-                                Modifier.size(50.dp)
+                            modifier = Modifier.size(50.dp)
                         )
                     }
                 }
 
-                Spacer(
-                    Modifier.height(10.dp)
-                )
+                Spacer(Modifier.height(10.dp))
 
                 Text(
                     profile?.fullName?.ifBlank { "Learner" } ?: "Learner",
-                    color = Color.White,
+                    color = textMain,
                     fontSize = 24.sp
                 )
 
                 Text(
                     profile?.email.orEmpty(),
-                    color = Color.Gray
+                    color = textMuted
                 )
 
                 Text(
                     "Student Account",
-                    color = Color(0xFF8B3DFF)
+                    color = accentColor
                 )
             }
         }
 
         error?.let {
-            Spacer(
-                Modifier.height(8.dp)
-            )
-            Text(
-                it,
-                color = Color(0xFFFFA8A8)
-            )
+            Spacer(Modifier.height(8.dp))
+            Text(it, color = Color(0xFFFFA8A8))
         }
 
-        Spacer(
-            Modifier.height(25.dp)
-        )
+        Spacer(Modifier.height(25.dp))
 
         ProfileItem(
-            Icons.Default.DarkMode,
-            if (settings.darkMode) "Dark Mode: On" else "Dark Mode: Off"
+            icon = Icons.Default.DarkMode,
+            title = if (settings.darkMode) "Dark Mode: On" else "Dark Mode: Off",
+            textColor = textMain,
+            cardBg = cardBg
         ) {
             backend.updateSettings(settings.copy(darkMode = !settings.darkMode)) { result ->
                 result.onFailure { error = it.localizedMessage }
@@ -184,18 +171,26 @@ fun ProfileScreen(
         }
 
         ProfileItem(
-            Icons.Default.Settings,
-            "Settings"
+            icon = Icons.Default.Settings,
+            title = "Settings",
+            textColor = textMain,
+            cardBg = cardBg
+        ) {
+            showSettings = true
+        }
+
+        ProfileItem(
+            icon = Icons.Default.EmojiEvents,
+            title = "Leaderboard",
+            textColor = textMain,
+            cardBg = cardBg
         ) {}
 
         ProfileItem(
-            Icons.Default.EmojiEvents,
-            "Leaderboard"
-        ) {}
-
-        ProfileItem(
-            Icons.Default.Notifications,
-            if (settings.notifications) "Notifications: On" else "Notifications: Off"
+            icon = Icons.Default.Notifications,
+            title = if (settings.notifications) "Notifications: On" else "Notifications: Off",
+            textColor = textMain,
+            cardBg = cardBg
         ) {
             backend.updateSettings(settings.copy(notifications = !settings.notifications)) { result ->
                 result.onFailure { error = it.localizedMessage }
@@ -203,8 +198,10 @@ fun ProfileScreen(
         }
 
         ProfileItem(
-            Icons.Default.Logout,
-            "Logout"
+            icon = Icons.Default.Logout,
+            title = "Logout",
+            textColor = textMain,
+            cardBg = cardBg
         ) {
             onLogout()
         }
@@ -215,6 +212,8 @@ fun ProfileScreen(
 fun ProfileItem(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     title: String,
+    textColor: Color = Color.White,
+    cardBg: Color = Color(0xFF1A2033),
     onClick: () -> Unit
 ) {
     Card(
@@ -222,38 +221,28 @@ fun ProfileItem(
             Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
-                .clickable {
-                    onClick()
-                },
+                .clickable { onClick() },
         colors =
-            CardDefaults.cardColors(
-                containerColor =
-                    Color(0xFF1A2033)
-            )
+            CardDefaults.cardColors(containerColor = cardBg)
     ) {
         Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
                     .padding(18.dp),
-            verticalAlignment =
-                Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 icon,
                 null,
-                tint =
-                    Color(0xFF8B3DFF)
+                tint = Color(0xFF8B3DFF)
             )
 
-            Spacer(
-                Modifier.width(15.dp)
-            )
+            Spacer(Modifier.width(15.dp))
 
             Text(
                 title,
-                color =
-                    Color.White
+                color = textColor
             )
         }
     }

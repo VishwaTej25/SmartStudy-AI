@@ -102,7 +102,7 @@ class SmartStudyBackend(
 
                 val remoteCourses = snapshot?.documents.orEmpty().map { it.toCourse() }
                 println("COURSES COUNT = ${remoteCourses.size}")
-                if (remoteCourses.isEmpty()) {
+                if (remoteCourses.size < defaultCourses.size) {
                     seedCourses()
                     onUpdate(defaultCourses)
                 } else {
@@ -413,19 +413,46 @@ class SmartStudyBackend(
         private const val TEST_ATTEMPTS = "testAttempts"
 
         val defaultCourses = listOf(
-            Course("java",     "Java Programming",    "Core Java + OOPs + Advanced Java",    "☕", 1),
-            Course("python",   "Python",              "Python Basics to Advanced + ML",       "🐍", 2),
-            Course("dsa",      "DSA",                 "Data Structures & Algorithms",         "🧠", 3),
-            Course("dbms",     "DBMS",                "Database Management System",           "🗄️", 4),
-            Course("os",       "Operating Systems",   "OS Concepts & Process Scheduling",     "💻", 5),
-            Course("networks", "Computer Networks",   "Networking Fundamentals & Protocols",  "🌐", 6),
-            Course("cn",       "Cloud Computing",     "AWS, Azure & GCP Fundamentals",        "☁️", 7),
-            Course("se",       "Software Engineering","SDLC, Agile & Design Patterns",        "🏗️", 8),
-            Course("ml",       "Machine Learning",    "ML Algorithms & Neural Networks",      "🤖", 9),
-            Course("crypto",   "Cryptography",        "Encryption, Hashing & Security",       "🔐", 10),
-            Course("webdev",   "Web Development",     "HTML, CSS, JS, React & Node.js",       "🌍", 11),
-            Course("mobile",   "Mobile Development",  "Android & iOS App Development",        "📱", 12),
-            Course("devops",   "DevOps",              "CI/CD, Docker & Kubernetes",           "⚙️", 13)
+            Course("math_discrete", "Discrete Mathematics", "Sets, Logic, Relations, Graphs & Combinatorics", "📐", 1),
+            Course("math_stats", "Probability & Statistics", "Probability Distributions, Hypothesis Testing & Regression", "📊", 2),
+            Course("c_cpp", "C & C++ Programming", "Procedural & Object-Oriented Programming Fundamentals", "💻", 3),
+            Course("java", "Java Programming", "Core Java + OOPs + Advanced Java", "☕", 4),
+            Course("python", "Python Programming", "Python Basics, Scripting & Libraries", "🐍", 5),
+            Course("dsa", "Data Structures & Algorithms", "Stack, Queue, Trees, Graphs, Sorting & Searching", "🧠", 6),
+            Course("dbms", "DBMS", "Database Management Systems & SQL", "🗄️", 7),
+            Course("os", "Operating Systems", "Process Management, Memory, Storage & I/O", "💿", 8),
+            Course("networks", "Computer Networks", "TCP/IP OSI Model, Routing & Protocols", "🌐", 9),
+            Course("se", "Software Engineering", "SDLC, Agile, Git, testing & UML", "🏗️", 10),
+            Course("toc", "Theory of Computation", "Finite Automata, Context Free Grammars & Turing Machines", "⚙️", 11),
+            Course("compiler", "Compiler Design", "Lexical Analysis, Parsing, Code Generation & Optimization", "🔧", 12),
+            Course("coa", "Computer Architecture", "CPU, ALU, Memory Hierarchy & Instruction Pipelines", "🖥️", 13),
+            Course("webdev", "Web Development", "HTML, CSS, JS, React, Node.js & Full-stack dev", "🌍", 14),
+            Course("ai", "Artificial Intelligence", "Search Algorithms, Knowledge Representation & Planning", "🤖", 15),
+            Course("ml", "Machine Learning", "Regression, Classification, Clustering & Neural Networks", "🧠", 16),
+            Course("crypto", "Cryptography & Security", "Symmetric/Asymmetric Encryption, Hashes & Network Security", "🔐", 17),
+            Course("cloud", "Cloud Computing", "Virtualization, SaaS/PaaS/IaaS, AWS, Azure & GCP", "☁️", 18),
+            Course("bigdata", "Big Data Analytics", "Hadoop, Spark, NoSQL & Data Engineering", "🛢️", 19),
+            Course("iot", "Internet of Things", "Sensors, Actuators, Microcontrollers & IoT Protocols", "🔌", 20),
+            Course("mobile", "Mobile Development", "Kotlin, Swift, Flutter & Android/iOS Apps", "📱", 21),
+            Course("devops", "DevOps & CI/CD", "Docker, Kubernetes, Jenkins & Infrastructure as Code", "🔄", 22),
+            Course("micro", "Microprocessors", "8085/8086 Assembly Language, Interfacing & Interrupts", "📟", 23),
+            Course("dld", "Digital Logic Design", "Logic Gates, Boolean Algebra, Combinational & Sequential Circuits", "🔢", 24),
+            Course("graphics", "Computer Graphics", "Rasterization, Ray Tracing, OpenGL & 3D Rendering", "🎨", 25),
+            Course("testing", "Software Testing", "Unit, Integration, System Testing & Automation QA", "🧪", 26),
+            Course("distributed", "Distributed Systems", "Consensus, RPCs, MapReduce & Fault Tolerance", "🌐", 27),
+            Course("blockchain", "Blockchain Technology", "Consensus Algorithms, Cryptocurrencies & Smart Contracts", "⛓️", 28),
+            Course("datamining", "Data Mining", "Data Preprocessing, Association Rules & Pattern Discovery", "⛏️", 29),
+            Course("nlp", "Natural Language Processing", "Text Tokenization, Parsing, Sentiment Analysis & LLMs", "🗣️", 30),
+            Course("ooad", "OOAD using UML", "Use Cases, Class/Sequence Diagrams & Design Patterns", "📐", 31),
+            Course("dsp", "Digital Signal Processing", "Signals, Fourier Transforms, Filters & LTI Systems", "📡", 32),
+            Course("vlsi", "VLSI Design", "CMOS Circuits, Layouts, Verilog/VHDL & ASIC Design", "🔌", 33),
+            Course("embedded", "Embedded Systems", "Real-Time OS (RTOS), Firmware & Microcontrollers", "📟", 34),
+            Course("netsec", "Network Security", "Firewalls, VPNs, IDS/IPS & Threat Prevention", "🛡️", 35),
+            Course("hci", "Human-Computer Interaction", "User Experience (UX) Design, Prototyping & Usability", "👥", 36),
+            Course("parallel", "Parallel Computing", "Multithreading, OpenMP, MPI & GPU programming (CUDA)", "⚡", 37),
+            Course("deeplearning", "Deep Learning", "Convolutional & Recurrent Nets, PyTorch & TensorFlow", "🧠", 38),
+            Course("softcomp", "Soft Computing", "Fuzzy Logic, Genetic Algorithms & Swarm Intelligence", "🐝", 39),
+            Course("ir", "Information Retrieval", "Search Engines, Indexing, TF-IDF & PageRank", "🔍", 40)
         )
 
         val sampleLeaderboard = listOf(
