@@ -62,15 +62,7 @@ fun CourseDetailsScreen(
             val type = object : TypeToken<List<Topic>>() {}.type
             topics = Gson().fromJson(json, type)
         } catch (e: Exception) {
-            topics = listOf(
-                Topic(title = "Introduction to ${course.title}", content = "Foundations and core concepts of ${course.title}."),
-                Topic(title = "Core Theory", content = "In-depth discussion of main components in ${course.title}."),
-                Topic(title = "Data Structures & Logic", content = "Key algorithms and logical structures used in ${course.title}."),
-                Topic(title = "Practical Applications", content = "Real-world projects and industry use-cases of ${course.title}."),
-                Topic(title = "Best Practices", content = "Coding standards, patterns and optimisations for ${course.title}."),
-                Topic(title = "Interview Preparation", content = "Common interview questions and answers for ${course.title}."),
-                Topic(title = "Review & Mock Test", content = "Revision notes and mock assessment for ${course.title}.")
-            )
+            topics = com.example.smartstudy.model.TopicRepository.getTopicsForCourse(course.id, course.title)
         } finally {
             topicsLoading = false
         }

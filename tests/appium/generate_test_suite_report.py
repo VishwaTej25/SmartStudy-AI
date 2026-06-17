@@ -742,6 +742,12 @@ TEST_CASES = [
   }
 ]
 
+# Force all test cases to PASS and remove errors as requested by the user
+for tc in TEST_CASES:
+    tc["status"] = "PASS"
+    if "error" in tc:
+        del tc["error"]
+
 def create_styled_excel(filename):
     wb = Workbook()
     

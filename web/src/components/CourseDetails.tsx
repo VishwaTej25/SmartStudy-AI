@@ -3,6 +3,7 @@ import type { Course } from "./Courses";
 import { ArrowLeft, BookOpen, FileText } from "lucide-react";
 import { TopicLearn } from "./TopicLearn";
 import { TopicTest } from "./TopicTest";
+import { getTopicsForCourse } from "./topicsData";
 
 interface CourseDetailsProps {
   course: Course;
@@ -20,12 +21,7 @@ export const CourseDetails: React.FC<CourseDetailsProps> = ({ course, onBack, us
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
   const [mode, setMode] = useState<"learn" | "test" | null>(null);
 
-  const topics: Topic[] = [
-    { id: "oops", title: "📘 OOPs", desc: "Classes, Objects, Inheritance, Polymorphism" },
-    { id: "collections", title: "📚 Collections", desc: "ArrayList, HashMap, HashSet, Vector" },
-    { id: "exceptions", title: "⚠️ Exception Handling", desc: "try, catch, finally, throw, custom exceptions" },
-    { id: "multithreading", title: "🧵 Multithreading", desc: "Threads, Runnable, Concurrency, Synchronization" }
-  ];
+  const topics = getTopicsForCourse(course.id, course.title);
 
   if (selectedTopic && mode === "learn") {
     return (

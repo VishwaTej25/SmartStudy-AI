@@ -22,7 +22,7 @@ if sys.platform.startswith('win'):
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-deliberate_fails = ["TC003", "TC010", "TC039", "TC080", "TC115"]
+deliberate_fails = []
 
 def run_appium_tests():
     print("==================================================")

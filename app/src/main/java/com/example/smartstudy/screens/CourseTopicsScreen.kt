@@ -96,13 +96,7 @@ fun CourseTopicsScreen(
             e.printStackTrace()
             errorMessage = "Failed to generate topics: ${e.localizedMessage}"
             // Fallback default topics in case AI fails
-            topics = listOf(
-                Topic(title = "Introduction to ${course.title}", content = "Basic concepts and foundations of ${course.title}."),
-                Topic(title = "Core Concepts", content = "In-depth discussion of main components and structures of ${course.title}."),
-                Topic(title = "Practical Applications", content = "Real-world projects and scenarios using ${course.title}."),
-                Topic(title = "Best Practices", content = "Coding standards and optimizations for ${course.title}."),
-                Topic(title = "Review and Exercises", content = "Review questions and study guide for ${course.title}.")
-            )
+            topics = com.example.smartstudy.model.TopicRepository.getTopicsForCourse(course.id, course.title)
         } finally {
             isLoading = false
         }
