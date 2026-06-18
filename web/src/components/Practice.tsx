@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowLeft, Code2, BookOpen } from "lucide-react";
 import { askGroq } from "../utils/groq";
 import { TopicTest } from "./TopicTest";
+import { defaultCourses } from "./Courses";
 
 interface PracticeCourse {
   id: string;
@@ -34,7 +35,7 @@ const codingProblems: CodingProblem[] = [
   }
 ];
 
-export const Practice: React.FC<{ userId: string }> = ({ userId }) => {
+export const Practice: React.FC<{ userId: string; enrolledCourseIds: Set<string> }> = ({ userId, enrolledCourseIds }) => {
   const [selectedCourse, setSelectedCourse] = useState<PracticeCourse | null>(null);
   const [mode, setMode] = useState<"mcq" | "coding" | null>(null);
 
@@ -44,11 +45,14 @@ export const Practice: React.FC<{ userId: string }> = ({ userId }) => {
   const [consoleOutput, setConsoleOutput] = useState("Press 'Run & Evaluate' to test your solution.");
   const [evaluating, setEvaluating] = useState(false);
 
-  const practiceCourses: PracticeCourse[] = [
-    { id: "java", title: "Java Programming", desc: "Practice OOPs, Exception Handling, & Collections", emoji: "☕" },
-    { id: "dbms", title: "DBMS & SQL", desc: "Practice SQL Joins, Queries, & normalizations", emoji: "🗄" },
-    { id: "dsa", title: "Data Structures & Algorithms", desc: "Array, Trees, Graphs & Sorting algorithms", emoji: "💻" }
-  ];
+  const practiceCourses: PracticeCourse[] = defaultCourses
+    .filter((course) => enrolledCourseIds.has(course.id))
+    .map((course) => ({
+      id: course.id,
+      title: course.title,
+      desc: course.subtitle,
+      emoji: course.emoji
+    }));
 
   const handleSelectProblem = (idx: number) => {
     setSelectedProblemIndex(idx);
@@ -209,23 +213,30 @@ export const Practice: React.FC<{ userId: string }> = ({ userId }) => {
       </div>
 
       <div style={styles.courseList}>
-        {practiceCourses.map((course) => (
-          <div key={course.id} className="glass-panel" style={styles.courseCard}>
-            <div style={styles.courseInfo}>
-              <span style={styles.courseEmoji}>{course.emoji}</span>
-              <div>
-                <h3 style={styles.courseTitle}>{course.title}</h3>
-                <p style={styles.courseDesc}>{course.desc}</p>
-              </div>
-            </div>
-            <button 
-              onClick={() => setSelectedCourse(course)} 
-              style={styles.startBtn}
-            >
-              Start Practice
-            </button>
+        {practiceCourses.length === 0 ? (
+          <div className="glass-panel" style={{ padding: "40px", textAlign: "center", color: "#9ca3af" }}>
+            <p style={{ fontSize: "1.1rem", marginBottom: "15px", fontWeight: "bold", color: "#fff" }}>No enrolled courses found.</p>
+            <p style={{ fontSize: "0.95rem" }}>Please go to the 📚 <b>Courses</b> tab to enroll in a course first!</p>
           </div>
-        ))}
+        ) : (
+          practiceCourses.map((course) => (
+            <div key={course.id} className="glass-panel" style={styles.courseCard}>
+              <div style={styles.courseInfo}>
+                <span style={styles.courseEmoji}>{course.emoji}</span>
+                <div>
+                  <h3 style={styles.courseTitle}>{course.title}</h3>
+                  <p style={styles.courseDesc}>{course.desc}</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setSelectedCourse(course)} 
+                style={styles.startBtn}
+              >
+                Start Practice
+              </button>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

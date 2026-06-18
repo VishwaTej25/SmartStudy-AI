@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ClipboardList } from "lucide-react";
 import { TopicTest } from "./TopicTest";
+import { defaultCourses } from "./Courses";
 
 interface AssessmentCourse {
   id: string;
@@ -10,14 +11,18 @@ interface AssessmentCourse {
   timeLimit: string;
 }
 
-export const Assessment: React.FC<{ userId: string }> = ({ userId }) => {
+export const Assessment: React.FC<{ userId: string; enrolledCourseIds: Set<string> }> = ({ userId, enrolledCourseIds }) => {
   const [selectedCourse, setSelectedCourse] = useState<AssessmentCourse | null>(null);
 
-  const assessmentCourses: AssessmentCourse[] = [
-    { id: "java", title: "Java OOPs Assessment", desc: "50 questions testing complete OOP design & structures", emoji: "☕", timeLimit: "30 Mins" },
-    { id: "dbms", title: "DBMS Assessment", desc: "50 questions on schema models, transactions & SQL", emoji: "🗄", timeLimit: "30 Mins" },
-    { id: "dsa", title: "DSA Logic Assessment", desc: "50 questions on algorithmic runtimes and structures", emoji: "💻", timeLimit: "30 Mins" }
-  ];
+  const assessmentCourses: AssessmentCourse[] = defaultCourses
+    .filter((course) => enrolledCourseIds.has(course.id))
+    .map((course) => ({
+      id: course.id,
+      title: `${course.title} Assessment`,
+      desc: `50 questions testing complete concepts of ${course.title}`,
+      emoji: course.emoji,
+      timeLimit: "30 Mins"
+    }));
 
   if (selectedCourse) {
     return (
@@ -38,29 +43,36 @@ export const Assessment: React.FC<{ userId: string }> = ({ userId }) => {
       </div>
 
       <div style={styles.courseList}>
-        {assessmentCourses.map((course) => (
-          <div key={course.id} className="glass-panel" style={styles.courseCard}>
-            <div style={styles.courseInfo}>
-              <span style={styles.courseEmoji}>{course.emoji}</span>
-              <div>
-                <h3 style={styles.courseTitle}>{course.title}</h3>
-                <p style={styles.courseDesc}>{course.desc}</p>
-                <div style={styles.metaInfo}>
-                  <ClipboardList size={14} style={{ color: "#a78bfa" }} />
-                  <span>50 Questions</span>
-                  <span style={styles.metaDot}>&bull;</span>
-                  <span>{course.timeLimit}</span>
+        {assessmentCourses.length === 0 ? (
+          <div className="glass-panel" style={{ padding: "40px", textAlign: "center", color: "#9ca3af" }}>
+            <p style={{ fontSize: "1.1rem", marginBottom: "15px", fontWeight: "bold", color: "#fff" }}>No enrolled courses found.</p>
+            <p style={{ fontSize: "0.95rem" }}>Please go to the 📚 <b>Courses</b> tab to enroll in a course first!</p>
+          </div>
+        ) : (
+          assessmentCourses.map((course) => (
+            <div key={course.id} className="glass-panel" style={styles.courseCard}>
+              <div style={styles.courseInfo}>
+                <span style={styles.courseEmoji}>{course.emoji}</span>
+                <div>
+                  <h3 style={styles.courseTitle}>{course.title}</h3>
+                  <p style={styles.courseDesc}>{course.desc}</p>
+                  <div style={styles.metaInfo}>
+                    <ClipboardList size={14} style={{ color: "#a78bfa" }} />
+                    <span>50 Questions</span>
+                    <span style={styles.metaDot}>&bull;</span>
+                    <span>{course.timeLimit}</span>
+                  </div>
                 </div>
               </div>
+              <button 
+                onClick={() => setSelectedCourse(course)} 
+                style={styles.startBtn}
+              >
+                Take Exam
+              </button>
             </div>
-            <button 
-              onClick={() => setSelectedCourse(course)} 
-              style={styles.startBtn}
-            >
-              Take Exam
-            </button>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

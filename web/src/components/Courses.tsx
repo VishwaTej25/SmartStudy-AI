@@ -16,7 +16,7 @@ interface CoursesProps {
   enrolledCourseIds: Set<string>;
 }
 
-const defaultCourses: Course[] = [
+export const defaultCourses: Course[] = [
   { id: "math_discrete", title: "Discrete Mathematics", subtitle: "Sets, Logic, Relations, Graphs & Combinatorics", emoji: "📐", order: 1 },
   { id: "math_stats", title: "Probability & Statistics", subtitle: "Probability Distributions, Hypothesis Testing & Regression", emoji: "📊", order: 2 },
   { id: "c_cpp", title: "C & C++ Programming", subtitle: "Procedural & Object-Oriented Programming Fundamentals", emoji: "💻", order: 3 },

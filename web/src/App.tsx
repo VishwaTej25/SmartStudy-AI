@@ -178,9 +178,9 @@ function App() {
       case "planner":
         return <Planner userId={user.uid} />;
       case "practice":
-        return <Practice userId={user.uid} />;
+        return <Practice userId={user.uid} enrolledCourseIds={enrolledCourseIds} />;
       case "assessment":
-        return <Assessment userId={user.uid} />;
+        return <Assessment userId={user.uid} enrolledCourseIds={enrolledCourseIds} />;
       case "chat":
         return <Chat userId={user.uid} />;
       case "leaderboard":

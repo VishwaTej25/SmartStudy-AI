@@ -24,145 +24,143 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-// import com.example.smartstudy.backend.GeminiHelper
+import com.example.smartstudy.backend.BackendProvider
+import com.example.smartstudy.backend.Course
+import com.example.smartstudy.backend.Enrollment
+import com.example.smartstudy.backend.SmartStudyBackend
 import com.example.smartstudy.backend.GroqHelper
 import kotlinx.coroutines.launch
 
-
-data class PracticeCourse(
-    val title:String,
-    val subtitle:String,
-    val emoji:String
-)
-
 @Composable
 fun PracticeScreen() {
+    val backend = remember { BackendProvider.backend }
+    var courses by remember { mutableStateOf(SmartStudyBackend.defaultCourses) }
+    var enrollments by remember { mutableStateOf<Map<String, Enrollment>>(emptyMap()) }
+    var error by remember { mutableStateOf<String?>(null) }
 
-    // Temporary enrolled courses
+    var selectedCourse by remember { mutableStateOf<Course?>(null) }
+    var selectedMode by remember { mutableStateOf<String?>(null) } // "mcq" or "coding"
 
-
-    var selectedPractice by remember {
-        mutableStateOf("")
-    }
-
-    when(selectedPractice) {
-
-        "java_mcq" -> {
-            TopicTestScreen(
-                onBack = {
-                    selectedPractice = ""
-                }
-            )
-            return
-        }
-
-        "java_code" -> {
-            CodingPracticeScreen(
-                onBack = {
-                    selectedPractice = ""
-                }
-            )
-            return
-        }
-    }
-
-    val enrolledCourses = listOf(
-
-        PracticeCourse(
-            "Java Programming",
-            "Practice Java coding & MCQs",
-            "☕"
-        ),
-
-        PracticeCourse(
-            "DBMS",
-            "SQL queries & database MCQs",
-            "🗄"
-        ),
-
-        PracticeCourse(
-            "DSA",
-            "Coding problems & logic building",
-            "💻"
+    DisposableEffect(Unit) {
+        val coursesListener = backend.listenCourses(
+            onUpdate = { courses = it },
+            onError = { error = it.localizedMessage }
         )
+        val enrollmentListener = backend.listenEnrollments(
+            onUpdate = { enrollments = it },
+            onError = { error = it.localizedMessage }
+        )
+        onDispose {
+            coursesListener.remove()
+            enrollmentListener?.remove()
+        }
+    }
 
-    )
+    val enrolledCourses = courses.filter { enrollments.containsKey(it.id) }
+
+    if (selectedCourse != null) {
+        when (selectedMode) {
+            "mcq" -> {
+                TopicTestScreen(
+                    courseName = selectedCourse!!.title,
+                    courseId = selectedCourse!!.id,
+                    onBack = {
+                        selectedCourse = null
+                        selectedMode = null
+                    }
+                )
+                return
+            }
+            "coding" -> {
+                CodingPracticeScreen(
+                    onBack = {
+                        selectedCourse = null
+                        selectedMode = null
+                    }
+                )
+                return
+            }
+        }
+    }
 
     LazyColumn(
-
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(
-
-                    Brush.verticalGradient(
-
-                        listOf(
-                            Color(0xFF000814),
-                            Color(0xFF001D5C)
-                        )
-
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    listOf(
+                        Color(0xFF000814),
+                        Color(0xFF001D5C)
                     )
-
                 )
-                .padding(16.dp)
-
+            )
+            .padding(16.dp)
     ) {
-
         item {
-
             Text(
-
                 text = "Practice Zone 🎯",
-
                 color = Color.White,
-
                 fontSize = 30.sp,
-
                 fontWeight = FontWeight.Bold
-
             )
-
-            Spacer(
-                Modifier.height(8.dp)
-            )
-
+            Spacer(Modifier.height(8.dp))
             Text(
-
-                text =
-                    "Practice your enrolled courses",
-
+                text = "Practice your enrolled courses",
                 color = Color.LightGray
-
             )
-
-            Spacer(
-                Modifier.height(25.dp)
-            )
-
+            Spacer(Modifier.height(25.dp))
         }
 
-        items(enrolledCourses) { course ->
+        error?.let {
+            item {
+                Text(it, color = Color(0xFFFFA8A8), modifier = Modifier.padding(bottom = 12.dp))
+            }
+        }
 
-            PracticeCourseCard(
-                course = course,
-
-                onCodingClick = {
-                    selectedPractice = "java_code"
-                },
-
-                onMcqClick = {
-                    selectedPractice = "java_mcq"
+        if (enrolledCourses.isEmpty()) {
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF1B2235)),
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "No enrolled courses found",
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            text = "Please go to the Courses tab to enroll in a course first!",
+                            color = Color.LightGray,
+                            fontSize = 14.sp,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        )
+                    }
                 }
-            )
-
-            Spacer(
-                Modifier.height(15.dp)
-            )
+            }
+        } else {
+            items(enrolledCourses) { course ->
+                PracticeCourseCard(
+                    course = course,
+                    onCodingClick = {
+                        selectedCourse = course
+                        selectedMode = "coding"
+                    },
+                    onMcqClick = {
+                        selectedCourse = course
+                        selectedMode = "mcq"
+                    }
+                )
+                Spacer(Modifier.height(15.dp))
+            }
         }
-
     }
-
 }
 
 data class CodingProblem(
@@ -337,24 +335,14 @@ fun CodingPracticeScreen(
                         consoleOutput = "Compiling and running tests on AI Sandbox..."
                         scope.launch {
                             val evaluationPrompt = """
-                                You are an automated online code judge.
-                                Evaluate the following student code for the problem: "${problem.title}".
-                                Problem Description: ${problem.description}
-                                
-                                Student Code:
+                                You are an online code judge.
+                                Evaluate the following code:
                                 ${userCode}
                                 
-                                Please test the code against typical inputs, check for compilation correctness, logic errors, and corner cases.
-                                Return a summary of the evaluation. Your response should contain:
-                                1. Status: SUCCESS if the code is correct, or COMPILE_ERROR / WRONG_ANSWER if there are issues.
-                                2. Output/Feedback: Detailed feedback on correctness, efficiency, and any syntax/logical bugs.
-                                Format your response in a clean, professional console-like output style.
+                                Indicate if it is correct.
                             """.trimIndent()
 
                             var response = GroqHelper.ask(evaluationPrompt)
-                            if (response.startsWith("ERROR:") || response.trim().isEmpty()) {
-                                throw Exception("Groq evaluation failed: ${response}")
-                            }
                             consoleOutput = response
                             isRunning = false
                         }
@@ -425,77 +413,52 @@ fun CodingPracticeScreen(
 
 @Composable
 fun PracticeCourseCard(
-    course: PracticeCourse,
+    course: Course,
     onCodingClick: () -> Unit,
     onMcqClick: () -> Unit
-){
+) {
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     val cardBgColor = if (isDark) Color(0xFF1B2235) else Color(0xFFFFFFFF)
     val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
     val textColorMuted = if (isDark) Color.LightGray else Color(0xFF4B5563)
 
     Card(
-        modifier=
-            Modifier.fillMaxWidth(),
-        colors=
-            CardDefaults.cardColors(
-                containerColor=cardBgColor
-            ),
-        shape=
-            RoundedCornerShape(20.dp),
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = cardBgColor),
+        shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ){
-        Column(
-            modifier=
-                Modifier.padding(20.dp)
-        ){
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text=course.emoji,
-                fontSize=40.sp
+                text = course.emoji,
+                fontSize = 40.sp
             )
-            Spacer(
-                Modifier.height(10.dp)
-            )
+            Spacer(Modifier.height(10.dp))
             Text(
-                text=course.title,
-                color=textColorMain,
-                fontSize=22.sp,
-                fontWeight=FontWeight.Bold
+                text = course.title,
+                color = textColorMain,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
             )
-            Spacer(
-                Modifier.height(8.dp)
-            )
+            Spacer(Modifier.height(8.dp))
             Text(
-                text=course.subtitle,
-                color=textColorMuted
+                text = course.subtitle,
+                color = textColorMuted
             )
-            Spacer(
-                Modifier.height(15.dp)
-            )
-            Row(
-                horizontalArrangement =
-                    Arrangement.spacedBy(10.dp)
-            ){
+            Spacer(Modifier.height(15.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Button(
                     onClick = onCodingClick,
-                    colors=
-                        ButtonDefaults.buttonColors(
-                            containerColor=
-                                Color(0xFF8B3DFF)
-                        )
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B3DFF))
                 ) {
-                    Text("Coding")
+                    Text("Coding", color = Color.White)
                 }
 
                 Button(
                     onClick = onMcqClick,
-                    colors=
-                        ButtonDefaults.buttonColors(
-                            containerColor=
-                                Color(0xFF00B894)
-                        )
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00B894))
                 ) {
-                    Text("MCQs")
+                    Text("MCQs", color = Color.White)
                 }
             }
         }
