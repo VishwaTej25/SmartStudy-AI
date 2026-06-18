@@ -111,7 +111,7 @@ def run_simulated_suite():
             tc["status"] = "PASS"
             print(f"[SIMULATED] {tc['id']} - {tc['name']}: ✅ PASS")
             
-    print("\nAll 120 test cases simulated.")
+    print(f"\nAll {len(TEST_CASES)} test cases simulated.")
     write_final_reports()
 
 def finalize_test_results():

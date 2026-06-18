@@ -76,7 +76,7 @@ function generateExcelReport(testCases, filename) {
   });
 
   const metricsData = [
-    ['Total Test Cases Run', total, 'Full E2E web suite coverage (TC001 to TC120)'],
+    ['Total Test Cases Run', total, `Full E2E web suite coverage (TC001 to TC${String(total).padStart(3, '0')})`],
     ['Passed', passed, 'Successful UI assertions'],
     ['Failed', failed, 'UI or script errors encountered'],
     ['Skipped', skipped, 'Conditional bypass'],
@@ -295,7 +295,7 @@ This document is a visual representation of the complete E2E testing suite execu
 
 | Metric | Value | Notes |
 | :--- | :--- | :--- |
-| **Total Test Cases** | ${total} | Full E2E web coverage (TC001 to TC120) |
+| **Total Test Cases** | ${total} | Full E2E web coverage (TC001 to TC${String(total).padStart(3, '0')}) |
 | **Passed** | ${passed} | UI assertions met successfully |
 | **Failed** | ${failed} | Errors/exceptions encountered |
 | **Skipped** | ${skipped} | Conditionally bypassed |
@@ -323,9 +323,9 @@ This document is a visual representation of the complete E2E testing suite execu
   mdContent += `
 ---
 
-## Detailed Test Cases (TC001 - TC120)
+## Detailed Test Cases (TC001 - TC${String(total).padStart(3, '0')})
 
-Below is the complete run log of all 120 test cases:
+Below is the complete run log of all ${total} test cases:
 
 | Test ID | Category | Test Case Name | Status | Duration (s) | Description / Steps / Error |
 | :--- | :--- | :--- | :---: | :---: | :--- |
