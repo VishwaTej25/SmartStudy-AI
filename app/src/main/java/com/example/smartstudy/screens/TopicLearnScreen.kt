@@ -34,6 +34,7 @@ import com.example.smartstudy.backend.GroqHelper
 @Composable
 fun TopicLearnScreen(
     courseName: String,
+    topicName: String = "",
     onBack: () -> Unit
 ) {
     val scrollState = rememberLazyListState()
@@ -175,7 +176,7 @@ fun TopicLearnScreen(
         item {
 
             Text(
-                text = "$courseName OOPs Concepts 📖",
+                text = if (topicName.isNotBlank()) "$topicName 📖" else "📖 $courseName",
                 color = textColorMain,
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold
@@ -184,7 +185,7 @@ fun TopicLearnScreen(
             Spacer(Modifier.height(8.dp))
 
             Text(
-                text = "Master $courseName with AI-powered study materials covering OOPs Concepts.",
+                text = "Master $courseName with AI-powered study materials.",
                 color = textColorMuted
             )
 
@@ -253,9 +254,9 @@ fun VideoScreen(
     val videos = listOf(
         Triple("Introduction & Overview", "Foundational concepts of $courseName", "$courseName introduction tutorial"),
         Triple("Core Principles Explained", "Deep dive into $courseName key principles", "$courseName core concepts explained"),
-        Triple("OOPs Concepts & Theory", "OOP design patterns and concepts for $courseName", "$courseName OOPs concepts tutorial"),
-        Triple("Data Structures in $courseName", "Common data structures and algorithms applied", "$courseName data structures tutorial"),
-        Triple("Practical Examples", "Coding walkthroughs and real-world scenarios", "$courseName practical coding examples"),
+        Triple("Key Concepts & Theory", "Important theoretical topics and concepts in $courseName", "$courseName key concepts tutorial"),
+        Triple("Practical Examples", "Coding walkthroughs and real-world scenarios for $courseName", "$courseName practical coding examples"),
+        Triple("Problem Solving", "Step-by-step problems and solutions in $courseName", "$courseName problem solving tutorial"),
         Triple("Advanced Topics", "In-depth advanced $courseName techniques", "$courseName advanced topics tutorial"),
         Triple("Interview Preparation", "Top interview questions and answers for $courseName", "$courseName interview questions")
     )
@@ -360,7 +361,7 @@ fun PdfScreen(
 
     LaunchedEffect(courseName) {
         notes = GroqHelper.ask(
-            "Generate detailed PDF-style study notes covering OOPs Concepts, important topics, definitions, " +
+            "Generate detailed PDF-style study notes covering important topics, definitions, " +
             "examples, and exam tips for the course: $courseName. Use clear sections and bullet points."
         )
     }

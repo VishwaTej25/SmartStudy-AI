@@ -190,7 +190,7 @@ fun BottomNavBar(
                     )
             ) {
                 when(selectedItem){
-                    0 -> HomeScreen()
+                    0 -> HomeScreen(onNavigate = { selectedItem = it })
                     1 -> CoursesScreen()
                     2 -> ChatScreen()
                     3 -> ProfileScreen(onLogout = onLogout)

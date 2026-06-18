@@ -116,24 +116,7 @@ fun ChatScreen() {
             modifier =
                 Modifier.padding(16.dp)
         )
-        Button(
-            onClick = {
-                scope.launch {
 
-                    val notes = GroqHelper.ask(
-                        "Generate short study notes for Java Programming"
-                    )
-
-                    messages = messages + ChatEntry(
-                        text = "📚 Study Notes\n\n$notes",
-                        userMessage = false
-                    )
-                }
-            },
-            modifier = Modifier.padding(start = 16.dp, bottom = 10.dp)
-        ) {
-            Text("Generate Notes")
-        }
 
         error?.let {
             Text(

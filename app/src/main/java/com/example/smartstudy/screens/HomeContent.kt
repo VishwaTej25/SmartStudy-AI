@@ -24,7 +24,7 @@ import com.example.smartstudy.backend.UserProfile
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeContent() {
+fun HomeContent(onNavigate: (Int) -> Unit = {}) {
 
     val context = LocalContext.current
 
@@ -187,10 +187,10 @@ fun HomeContent() {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    QuickCard("Courses", "📚")
-                    QuickCard("AI", "✅")
-                    QuickCard("Progress", "🎯")
-                    QuickCard("Rank", "📈")
+                    QuickCard("Courses", "📚", onClick = { onNavigate(1) })
+                    QuickCard("AI", "🤖", onClick = { onNavigate(2) })
+                    QuickCard("Progress", "🎯", onClick = { onNavigate(3) })
+                    QuickCard("Rank", "🏆", onClick = { onNavigate(7) })
                 }
                 Spacer(Modifier.height(100.dp))
             }
@@ -200,19 +200,19 @@ fun HomeContent() {
 
 @Composable
 fun QuickCard(
-    title:String,
-    emoji:String
-){
+    title: String,
+    emoji: String,
+    onClick: () -> Unit = {}
+) {
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     val textColorMain = if (isDark) Color.White else Color(0xFF1F2937)
     val cardBgColorSecondary = if (isDark) Color(0xFF1A2033) else Color(0xFFFFFFFF)
 
     Card(
-        modifier=
-            Modifier
-                .width(90.dp)
-                .height(100.dp)
-                .clickable {},
+        modifier = Modifier
+            .width(90.dp)
+            .height(100.dp)
+            .clickable { onClick() },
 
         colors=
             CardDefaults.cardColors(
