@@ -28,7 +28,7 @@ fun AiScreen() {
     val scope = rememberCoroutineScope()
 
     var enrolledCourses by remember { mutableStateOf<List<String>>(emptyList()) }
-    var aiInsights by remember { mutableStateOf<Map<String, String>>(emptyMapOf()) }
+    var aiInsights by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
     var isLoading by remember { mutableStateOf(true) }
 
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
