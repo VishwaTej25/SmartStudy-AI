@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartstudy.backend.BackendProvider
+import com.example.smartstudy.backend.UserProfile
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -54,6 +54,7 @@ fun CourseTopicsScreen(
     if (selectedTopic != null) {
         TopicLearnScreen(
             courseName = course.title,
+            courseId = course.id,
             topicName = selectedTopic!!.title,
             onBack = {
                 selectedTopic = null

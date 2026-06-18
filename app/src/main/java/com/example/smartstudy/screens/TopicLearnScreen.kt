@@ -34,6 +34,7 @@ import com.example.smartstudy.backend.GroqHelper
 @Composable
 fun TopicLearnScreen(
     courseName: String,
+    courseId: String = "java",
     topicName: String = "",
     onBack: () -> Unit
 ) {
@@ -53,61 +54,11 @@ fun TopicLearnScreen(
         }
 
         "quiz" -> {
-            // Dynamically fetch MCQ questions from Groq
-            var questions by remember { mutableStateOf<List<TestQuestion>>(emptyList()) }
-            var loading by remember { mutableStateOf(true) }
-            var fetchError by remember { mutableStateOf<String?>(null) }
-
-            LaunchedEffect(courseName) {
-                val prompt = "Generate 30 multiple‑choice questions for $courseName concepts. " +
-                        "Each question should have exactly four options labeled A, B, C, D and indicate the correct answer letter. " +
-                        "Return the list in the following plain‑text format separated by blank lines: " +
-                        "Question: <question>\nOptions: A) <opt1>, B) <opt2>, C) <opt3>, D) <opt4>\nAnswer: <letter>"
-                try {
-                    val raw = GroqHelper.ask(prompt)
-                    // Simple parser – split blocks by double newline
-                    val blocks = raw.split("\n\n")
-                    val parsed = mutableListOf<TestQuestion>()
-                    for (block in blocks) {
-                        val lines = block.lines().filter { it.isNotBlank() }
-                        if (lines.size >= 3) {
-                            val q = lines[0].removePrefix("Question: ").trim()
-                            val optsPart = lines[1].removePrefix("Options: ").trim()
-                            val options = optsPart.split(",").map { it.substringAfter(")").trim() }
-                            val ansLetter = lines[2].removePrefix("Answer: ").trim()
-                            // Map letter to option string
-                            val correct = when (ansLetter.uppercase()) {
-                                "A" -> options.getOrNull(0) ?: ""
-                                "B" -> options.getOrNull(1) ?: ""
-                                "C" -> options.getOrNull(2) ?: ""
-                                "D" -> options.getOrNull(3) ?: ""
-                                else -> ""
-                            }
-                            parsed.add(TestQuestion(question = q, options = options, correctAnswer = correct))
-                        }
-                    }
-                    questions = parsed
-                } catch (e: Exception) {
-                    fetchError = e.localizedMessage
-                } finally {
-                    loading = false
-                }
-            }
-
-            if (loading) {
-                // Simple loading UI
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = Color(0xFF8B3DFF))
-                }
-                return
-            }
-            if (fetchError != null) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = fetchError!!, color = Color(0xFFFFA8A8))
-                }
-                return
-            }
-
+            TopicTestScreen(
+                courseName = if (topicName.isNotBlank()) topicName else courseName,
+                courseId = courseId,
+                onBack = { selectedFeature = "" }
+            )
             return
         }
 

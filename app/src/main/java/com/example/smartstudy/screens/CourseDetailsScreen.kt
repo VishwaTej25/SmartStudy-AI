@@ -81,6 +81,7 @@ fun CourseDetailsScreen(
     if (openLearnScreen && selectedTopic != null) {
         TopicLearnScreen(
             courseName = course.title,
+            courseId = course.id,
             onBack = { openLearnScreen = false; selectedTopic = null }
         )
         return
