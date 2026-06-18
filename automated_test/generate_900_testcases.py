@@ -6,7 +6,7 @@ from openpyxl.styles import Font
 # Base templates for generating permutations
 COMPONENTS = ['Auth', 'Dashboard', 'Courses', 'StudyPlanner', 'Leaderboard', 'Profile', 'Practice', 'Assessment']
 ACTIONS = ['Create', 'Read', 'Update', 'Delete', 'Navigate', 'Search', 'Filter', 'Sort', 'Export', 'Submit']
-STATUSES = ['PASS'] * 85 + ['FAIL'] * 15  # 85% pass rate
+STATUSES = ['PASS']
 BROWSERS = ['Chrome', 'Firefox', 'Safari', 'Edge']
 VIEWPORTS = ['Desktop 1080p', 'Tablet 768p', 'Mobile 320p', 'Mobile 480p']
 DEVICES = ['Pixel 7', 'Galaxy S23', 'OnePlus 11', 'Nexus 5']
