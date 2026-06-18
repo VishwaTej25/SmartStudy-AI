@@ -37,11 +37,11 @@ export const TopicLearn: React.FC<TopicLearnProps> = ({ course, topic, onBack })
 
   // Curated video list for OOPs and general courses
   const videos = [
-    { title: `Introduction to ${topic.title.substring(2)}`, duration: "12:45", desc: `Understand the foundational concepts, definitions, and syntax of ${topic.title}.` },
-    { title: `${topic.title.substring(2)} - Core Mechanics`, duration: "18:22", desc: `Deep dive into the operational model, memory layout, and runtime handling of ${topic.title}.` },
-    { title: "Advanced Design Principles", duration: "24:10", desc: `Applying robust design patterns and industrial conventions with ${topic.title}.` },
-    { title: "Troubleshooting & Debugging", duration: "15:35", desc: `How to avoid common pitfalls, memory leaks, and compile-time issues.` },
-    { title: "Real-world Project Walkthrough", duration: "32:15", desc: `Developing and implementing a system using complete ${topic.title} standards.` }
+    { title: `Introduction to ${topic.title.substring(2)}`, desc: `Understand the foundational concepts, definitions, and syntax of ${topic.title}.` },
+    { title: `${topic.title.substring(2)} — Core Mechanics`, desc: `Deep dive into the operational model, memory layout, and runtime handling of ${topic.title}.` },
+    { title: `Practical Implementation`, desc: `Applying ${topic.title} in real-world projects and industry scenarios.` },
+    { title: `Common Problems & Debugging`, desc: `How to avoid common pitfalls and fix errors related to ${topic.title}.` },
+    { title: `Advanced Techniques`, desc: `Mastering advanced patterns and optimisations for ${topic.title} in ${course.title}.` }
   ];
 
   // Fetch AI content based on view
@@ -182,7 +182,7 @@ export const TopicLearn: React.FC<TopicLearnProps> = ({ course, topic, onBack })
                       <h4 style={styles.videoTitle}>{vid.title}</h4>
                       <p style={styles.videoDesc}>{vid.desc}</p>
                     </div>
-                    <span style={styles.durationBadge}>▶ {vid.duration}</span>
+                    <span style={styles.durationBadge}>▶ YouTube</span>
                   </div>
                 ))}
               </div>

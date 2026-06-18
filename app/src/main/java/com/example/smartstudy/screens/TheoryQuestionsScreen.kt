@@ -20,7 +20,7 @@ import com.example.smartstudy.backend.GroqHelper
 
 @Composable
 fun TheoryQuestionsScreen(
-    courseName: String = "Java OOPs",
+    courseName: String = "General Computer Science",
     onBack: () -> Unit
 ) {
     var loading by remember { mutableStateOf(true) }

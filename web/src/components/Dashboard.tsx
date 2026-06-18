@@ -38,8 +38,18 @@ export const Dashboard: React.FC<DashboardProps> = ({
       <div className="glass-panel" style={styles.streakCard}>
         <div style={styles.streakInfo}>
           <span style={styles.streakLabel}>🔥 Study Streak</span>
-          <span style={styles.streakVal}>{userProfile?.streak || 1} Days</span>
-          <span style={styles.streakSub}>Keep it up! You are doing great.</span>
+          <span style={styles.streakVal}>
+            {userProfile
+              ? userProfile.streak > 0
+                ? `${userProfile.streak} Days`
+                : "Start Today!"
+              : "—"}
+          </span>
+          <span style={styles.streakSub}>
+            {userProfile?.streak > 0
+              ? "Keep it up! You are doing great."
+              : "Complete a lesson to begin your streak 🎯"}
+          </span>
         </div>
         <div style={styles.streakIconContainer}>
           <span style={styles.streakIcon}>🔥</span>
@@ -52,9 +62,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
         <div className="glass-panel" style={styles.profileCard}>
           <h3 style={styles.profileTitle}>👤 {userProfile?.fullName || "Learner"}</h3>
           <div style={styles.profileMeta}>
-            <p style={styles.metaItem}>Department: <span style={styles.whiteText}>CSE</span></p>
-            <p style={styles.metaItem}>Year: <span style={styles.whiteText}>4th Year</span></p>
-            <p style={styles.metaItem}>College: <span style={styles.whiteText}>SIMATS</span></p>
+            <p style={styles.metaItem}>Email: <span style={styles.whiteText}>{userProfile?.email || "—"}</span></p>
+            <p style={styles.metaItem}>Mobile: <span style={styles.whiteText}>{userProfile?.mobile || "—"}</span></p>
+            <p style={styles.metaItem}>XP Points: <span style={styles.whiteText}>{userProfile?.xp ?? 0} XP</span></p>
           </div>
           <div style={styles.keepLearning}>Keep learning 🚀</div>
         </div>
@@ -63,22 +73,22 @@ export const Dashboard: React.FC<DashboardProps> = ({
         <div style={styles.miniStatsGrid}>
           <div className="glass-panel" style={styles.miniCard}>
             <BookOpen size={24} color="#8b3dff" />
-            <div style={styles.miniVal}>{enrolledCoursesCount || 4}</div>
+            <div style={styles.miniVal}>{enrolledCoursesCount}</div>
             <div style={styles.miniLabel}>Courses Enrolled</div>
           </div>
           <div className="glass-panel" style={styles.miniCard}>
             <CheckSquare size={24} color="#00b894" />
-            <div style={styles.miniVal}>{completedPlansCount || 2}</div>
+            <div style={styles.miniVal}>{completedPlansCount}</div>
             <div style={styles.miniLabel}>Done Today</div>
           </div>
           <div className="glass-panel" style={styles.miniCard}>
             <Award size={24} color="#facc15" />
-            <div style={styles.miniVal}>15</div>
+            <div style={styles.miniVal}>{Math.floor((userProfile?.xp ?? 0) / 50)}</div>
             <div style={styles.miniLabel}>Badges Earned</div>
           </div>
           <div className="glass-panel" style={styles.miniCard}>
             <Zap size={24} color="#ec4899" />
-            <div style={styles.miniVal}>{userProfile?.xp || 120}</div>
+            <div style={styles.miniVal}>{userProfile?.xp ?? 0}</div>
             <div style={styles.miniLabel}>XP Points</div>
           </div>
         </div>
@@ -110,10 +120,14 @@ export const Dashboard: React.FC<DashboardProps> = ({
         {/* Left Column: AI Prediction & Weekly Graph */}
         <div style={styles.leftColumn}>
           <div className="glass-panel" style={styles.sectionCard}>
-            <h3 style={styles.analyticsTitle}>AI Prediction Score 🎯</h3>
-            <p style={styles.analyticsText}>91% probability of scoring above A grade</p>
+            <h3 style={styles.analyticsTitle}>📊 Learning Progress</h3>
+            <p style={styles.analyticsText}>
+              {enrolledCoursesCount > 0
+                ? `You are enrolled in ${enrolledCoursesCount} course${enrolledCoursesCount > 1 ? "s" : ""}. Keep completing topics to build your score!`
+                : "Enrol in a course to start tracking your progress."}
+            </p>
             <div style={styles.progressContainer}>
-              <div style={{ ...styles.progressBar, width: "91%" }} />
+              <div style={{ ...styles.progressBar, width: `${Math.min(100, enrolledCoursesCount * 10)}%` }} />
             </div>
           </div>
 

@@ -1,6 +1,5 @@
 package com.example.smartstudy.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,18 +14,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartstudy.backend.BackendProvider
-import com.example.smartstudy.backend.UserProfile
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(onNavigate: (Int) -> Unit = {}) {
-
-    val context = LocalContext.current
 
     // ── Real user profile from Firestore ──────────────────────────────────
     var userProfile by remember { mutableStateOf<UserProfile?>(null) }
@@ -54,56 +49,14 @@ fun HomeContent(onNavigate: (Int) -> Unit = {}) {
     val textColorSecondary  = if (isDark) Color.Gray       else Color(0xFF6B7280)
     val cardBgColor         = if (isDark) Color(0xFF1B2235) else Color(0xFFFFFFFF)
 
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            ModalDrawerSheet {
-                Spacer(Modifier.height(20.dp))
-                Text(
-                    "Smart Study AI 🚀",
-                    modifier = Modifier.padding(16.dp),
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                NavigationDrawerItem(
-                    label = { Text("🏠 Home") },
-                    selected = true,
-                    onClick = {}
-                )
-                NavigationDrawerItem(
-                    label = { Text("🏆 Leaderboard") },
-                    selected = false,
-                    onClick = {
-                        Toast.makeText(context, "Leaderboard", Toast.LENGTH_SHORT).show()
-                    }
-                )
-                NavigationDrawerItem(
-                    label = { Text("⚙ Settings") },
-                    selected = false,
-                    onClick = {
-                        Toast.makeText(context, "Settings", Toast.LENGTH_SHORT).show()
-                    }
-                )
-                NavigationDrawerItem(
-                    label = { Text("🚪 Logout") },
-                    selected = false,
-                    onClick = {
-                        Toast.makeText(context, "Logout", Toast.LENGTH_SHORT).show()
-                    }
-                )
-            }
-        }
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(listOf(backgroundColor, backgroundEndColor))
+            )
+            .padding(16.dp)
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(listOf(backgroundColor, backgroundEndColor))
-                )
-                .padding(16.dp)
-        ) {
 
             // ── Greeting ──────────────────────────────────────────────────
             item {
@@ -194,9 +147,9 @@ fun HomeContent(onNavigate: (Int) -> Unit = {}) {
                 }
                 Spacer(Modifier.height(100.dp))
             }
-        }
     }
 }
+
 
 @Composable
 fun QuickCard(
