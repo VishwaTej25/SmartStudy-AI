@@ -32,7 +32,7 @@ jobs:
 
       - name: Install Dependencies
         working-directory: web
-        run: npm ci
+        run: npm install
 
       - name: TypeScript Check (no-emit)
         working-directory: web
