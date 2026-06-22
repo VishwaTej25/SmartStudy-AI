@@ -26,7 +26,7 @@ function App() {
   const [currentTab, setCurrentTab] = useState("dashboard");
   const [userProfile, setUserProfile] = useState<any>(null);
   const [settings, setSettings] = useState<any>({ darkMode: true, aiVoice: true, notifications: true });
-  const [enrolledCourseIds, setEnrolledCourseIds] = useState<Set<String>>(new Set());
+  const [enrolledCourseIds, setEnrolledCourseIds] = useState<Set<string>>(new Set());
   const [enrollments, setEnrollments] = useState<any>({});
   const [plans, setPlans] = useState<any[]>([]);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
